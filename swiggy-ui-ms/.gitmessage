@@ -1,0 +1,18 @@
+Replace this line with imperative summary
+
+An awesome description of WHY you did this work, not HOW/WHAT it does.
+The diff attached to commit should describe implementation (HOW) 
+well-enough.
+
+# [TICKET-12]
+
+#------------------------------------------------^---------------------^
+#                                              50^                   72^
+# 1. Summary should be imperative (not past tense), 50 characters or
+#    less, and not end with a period.
+#
+# 2. Description of commit should explain WHY a change was made and
+#    lines should be wrapped to 72 characters.
+#
+# 3. Optionally, reference a ticket number. If needed, uncomment and
+#    go to town.

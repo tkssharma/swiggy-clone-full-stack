@@ -1,0 +1,12 @@
+import React from 'react';
+import { render } from 'src/test-utils';
+
+import {{ properCase name }} from '.';
+
+describe('{{ properCase name }}', () => {
+  it('should render correctly', () => {
+    const { asFragment } = render(
+      <{{ properCase name }} />);
+    expect(asFragment()).toMatchSnapshot();
+  });
+});

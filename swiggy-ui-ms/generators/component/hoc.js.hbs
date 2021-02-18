@@ -1,0 +1,29 @@
+/**
+ *HOC
+ * {{ camelCase name }}
+ *
+ */
+
+import React, { useState, useEffect } from "react";
+
+import { getDisplayName } from '../../../core/utils/getDisplayName';
+
+const {{ camelCase name}} = WrappedComponent => {
+  // ...and returns another component...
+
+  function {{ properCase name}}(props) {
+   const [dummy, setDummy] = useState(true);
+
+    useEffect(() => {
+      // ... Use hooks
+      setDummy(false);
+    });
+
+    return <WrappedComponent {...props} dummy={dummy} />;
+  }
+
+  {{ properCase name}}.displayName = `{{ properCase name}}(${getDisplayName(WrappedComponent)})`;
+  return {{ properCase name}};
+}
+
+export default {{ camelCase name }};

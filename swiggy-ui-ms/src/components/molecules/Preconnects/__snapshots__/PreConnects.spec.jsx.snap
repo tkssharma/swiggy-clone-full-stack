@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PreConnects should render correctly 1`] = `
+<DocumentFragment>
+  <link
+    href="/test"
+    rel="preconnect"
+  />
+</DocumentFragment>
+`;
+
+exports[`PreConnects should render null if urlList is not present 1`] = `<DocumentFragment />`;

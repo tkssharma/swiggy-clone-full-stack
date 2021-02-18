@@ -1,0 +1,10 @@
+FROM node:carbon
+WORKDIR /usr/src/app
+
+COPY package.json ./
+
+RUN npm install
+
+# Add your source files
+COPY . .
+EXPOSE 3000

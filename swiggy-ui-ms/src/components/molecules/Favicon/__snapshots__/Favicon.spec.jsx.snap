@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Favicon should render correctly 1`] = `
+<DocumentFragment>
+  <link
+    href="/images/favicon.ico"
+    rel="icon"
+    sizes="16x16"
+    type="image/png"
+  />
+  <link
+    href="/images/favicon.ico"
+    rel="icon"
+    sizes="32x32"
+    type="image/png"
+  />
+  <link
+    href="/images/favicon.ico"
+    rel="icon"
+    sizes="96x96"
+    type="image/png"
+  />
+</DocumentFragment>
+`;

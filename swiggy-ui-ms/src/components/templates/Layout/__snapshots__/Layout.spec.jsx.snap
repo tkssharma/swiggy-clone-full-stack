@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Layout should render correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="makeStyles-root-1"
+  >
+    <header
+      class="MuiPaper-root MuiAppBar-root MuiAppBar-positionStatic MuiAppBar-colorPrimary MuiPaper-elevation4"
+    >
+      <div
+        class="MuiContainer-root MuiContainer-maxWidthLg"
+      >
+        <div
+          class="MuiToolbar-root MuiToolbar-regular"
+        >
+          <h6
+            class="MuiTypography-root makeStyles-title-3 MuiTypography-h6"
+          >
+            Hiring & Staffing
+          </h6>
+        </div>
+      </div>
+    </header>
+    <p>
+      This is dummy page
+    </p>
+  </div>
+</DocumentFragment>
+`;

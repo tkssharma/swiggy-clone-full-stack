@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Link should render correctly 1`] = `
+<DocumentFragment>
+  <a
+    class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiTypography-colorPrimary"
+    href="/"
+  >
+    This is dummy link
+  </a>
+</DocumentFragment>
+`;
+
+exports[`Link should render correctly with naked true 1`] = `
+<DocumentFragment>
+  <a
+    class=""
+    href="/"
+  >
+    This is dummy link
+  </a>
+</DocumentFragment>
+`;
