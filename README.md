@@ -1,3 +1,3 @@
 # developer-platform
 
-![Drag Racing](./codehack.png)
+![Drag Racing](./diag/swiggy-clone.png)
