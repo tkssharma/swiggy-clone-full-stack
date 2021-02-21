@@ -1,3 +1,3 @@
-import HomePage from '../components/templates/HomePage';
+import HomePage from '../components/templates/Landing';
 
 export default HomePage;

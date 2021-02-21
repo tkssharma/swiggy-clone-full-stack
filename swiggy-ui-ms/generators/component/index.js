@@ -68,7 +68,7 @@ module.exports = {
       },
       {
         type: 'add',
-        path: '../src/components/{{ folder }}/{{properCase name}}/{{properCase name}}.jsx',
+        path: '../src/components/{{ folder }}/{{properCase name}}/{{properCase name}}.js',
         templateFile: componentTemplate,
         abortOnFail: true,
       },
@@ -80,23 +80,11 @@ module.exports = {
       },
       {
         type: 'add',
-        path: '../src/components/{{ folder }}/{{properCase name}}/{{properCase name}}.spec.jsx',
+        path: '../src/components/{{ folder }}/{{properCase name}}/{{properCase name}}.spec.js',
         templateFile: './component/test.js.hbs',
         abortOnFail: true,
       },
     ];
-
-    if (data.type !== 'HOC') {
-      return [
-        ...actions,
-        {
-          type: 'add',
-          path: '../src/components/{{ folder }}/{{properCase name}}/{{properCase name}}.style.js',
-          templateFile: './component/style.js.hbs',
-          abortOnFail: true,
-        },
-      ];
-    }
 
     return actions;
   },

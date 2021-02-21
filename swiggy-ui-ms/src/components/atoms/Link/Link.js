@@ -3,20 +3,16 @@ import React from 'react';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
-import MuiLink from '@material-ui/core/Link';
-import useStyles from './Link.style';
 
 const NextComposed = React.forwardRef(function NextComposed(props, ref) {
-  const classes = useStyles();
   const { as, href, ...other } = props;
 
   return (
     <NextLink href={href} as={as}>
-      <a className={classes.root} ref={ref} {...other} />
+      <a ref={ref} {...other} />
     </NextLink>
   );
 });
-
 // A styled version of the Next.js Link component:
 // https://nextjs.org/docs/#with-link
 function Link(props) {

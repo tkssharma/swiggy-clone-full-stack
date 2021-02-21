@@ -5,18 +5,16 @@
  */
 import React, { useEffect, useState } from 'react';
 
-import useStyles from './{{ properCase name }}.style';
 
 const {{ properCase name }} = ({props}) => {
   const [dummy, setDummy] = useState(true);
-  const classes = useStyles();
 
   useEffect(() => {
     // ... Use hooks
     setDummy(false);
   });
 
-  return (<div className={classes.root} dummy={dummy} {...props} />);
+  return (<div dummy={dummy} {...props} />);
 };
 
 export default {{ properCase name }};

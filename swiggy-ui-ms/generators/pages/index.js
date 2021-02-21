@@ -22,12 +22,6 @@ module.exports = {
     },
     {
       type: 'add',
-      path: '../src/components/templates/{{properCase name}}/{{properCase name}}.style.js',
-      templateFile: './component/style.js.hbs',
-      abortOnFail: true,
-    },
-    {
-      type: 'add',
       path: '../src/components/templates/{{properCase name}}/index.js',
       templateFile: './component/index.js.hbs',
       abortOnFail: true,

@@ -2,16 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { render } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
-import { ThemeProvider } from '@material-ui/core/styles';
-import { LabelProvider } from '../stores/labels';
 import { theme } from '../theme';
 
 const AllTheProviders = ({ children, mocks = [] }) => {
   return (
     <MockedProvider mocks={mocks} addTypename={false}>
-      <ThemeProvider theme={theme}>
-        <LabelProvider>{children}</LabelProvider>
-      </ThemeProvider>
+        {children}
     </MockedProvider>
   );
 };

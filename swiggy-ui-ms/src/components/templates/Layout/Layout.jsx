@@ -7,13 +7,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Header from '../../organisms/Header';
 
-import useStyles from './Layout.style';
 
 const Layout = ({ children }) => {
-  const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    <div>
       <Header />
       {children}
     </div>
