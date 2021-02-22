@@ -15,7 +15,6 @@ const Landing = (props) => {
   return (
   <Fragment>
      <HeroComponent />
-     <Feature />
      <Ads />
      <Footer />
     </Fragment>

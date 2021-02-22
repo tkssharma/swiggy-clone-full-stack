@@ -2,13 +2,11 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { ApolloProvider } from '@apollo/client';
 import GraphQLClient from '../graphQL/ApolloClient';
-
+import { UserProvider } from '../components/hoc/UserContext/UserContext';
 import content from '../../content/en';
 
 const AppComponent = ({ Component, pageProps }) => {
-
-  useEffect(() => {
-  }, []);
+  useEffect(() => {}, []);
 
   return <Component {...pageProps} />;
 };
@@ -32,7 +30,9 @@ function App({ Component, pageProps }) {
   return (
     <>
       <ApolloProvider client={client}>
-            <AppComponent Component={Component} pageProps={pageProps} />
+        <UserProvider>
+          <AppComponent Component={Component} pageProps={pageProps} />
+        </UserProvider>
       </ApolloProvider>
     </>
   );

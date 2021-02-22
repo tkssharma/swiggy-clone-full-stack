@@ -6,262 +6,110 @@ import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 // import env from 'react-dotenv';
+import { auth} from '../../../firebase/firebase';
 
-const Div = styled.div`
-    font-family: sans-serif;
-`;
+const Div = styled.div`font-family: sans-serif;`;
 
 const useStyles = makeStyles({
     list: {
-        width: 450,
+        width: 450
     },
     fullList: {
-        width: 'auto',
-    },
+        width: 'auto'
+    }
 });
 
 export default function LoginDrawer() {
-    const [phoneNumber, setPhoneNumber] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const classes = useStyles();
     const [state, setState] = useState({
-        bottom: false,
+        bottom: false
     });
 
+    const handleSubmit = () => {
+        auth.signInWithEmailAndPassword(email, password).catch(error => {
+               setError("Error signing in with password and email!");
+              console.error("Error signing in with password and email", error);
+        });
+    }
+
     const toggleDrawer = (anchor, open) => (event) => {
-        if (
-            event.type === 'keydown' &&
-            (event.key === 'Tab' || event.key === 'Shift')
-        ) {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
-
         setState({ ...state, [anchor]: open });
     };
 
     const list = (anchor) => (
         <div
             className={clsx(classes.list, {
-                [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+                [classes.fullList]: anchor === 'top' || anchor === 'bottom'
             })}
             style={{ right: 0 }}
-            role='presentation'
+            role="presentation"
         >
-            <Div className='container mt-3' style={{ width: '90%' }}>
-                <Div className='row'>
-                    <Div className='col text-left'>
-                        <button
-                            type='button'
-                            className='btn btn-sm'
-                            onClick={toggleDrawer(anchor, false)}
-                        >
-                            <i className='fas fa-times fa-lg'></i>
+            <Div className="container mt-3" style={{ width: '90%' }}>
+                <Div className="row">
+                    <Div className="col text-left">
+                        <button type="button" className="btn btn-sm" onClick={toggleDrawer(anchor, false)}>
+                            <i className="fas fa-times fa-lg" />
                         </button>
-                        <div className='container mt-2'>
-                            <div className='row'>
-                                <div className='col-lg-5 ml-3'>
+                        <div className="container mt-2">
+                            <div className="row">
+                                <div className="col-lg-5 ml-3">
                                     <h3>Login</h3>
                                     <small>
-                                        or{' '}
-                                        <b style={{ color: '#fc8019' }}>
-                                            create an account
-                                        </b>
+                                        or <b style={{ color: '#fc8019' }}>create an account</b>
                                     </small>
                                 </div>
-                                <div className='col-lg-5 ml-4'>
+                                <div className="col-lg-5 ml-4">
                                     <img
-                                        className='img-fluid'
+                                        className="img-fluid"
                                         style={{
                                             width: '105px',
                                             height: '100px',
                                             borderRadius: '50%',
-                                            fload: 'right',
+                                            fload: 'right'
                                         }}
-                                        src='https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/Image-login_btpq7r'
-                                        alt='logo of wrap'
+                                        src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/Image-login_btpq7r"
+                                        alt="logo of wrap"
                                     />
                                 </div>
                             </div>
-                            <div className='container-fluid mt-3'>
-                                <div className='row'>
-                                    <div className='col-lg-12'>
+                            <div className="container-fluid mt-3">
+                                <div className="row">
+                                    <div className="col-lg-12">
                                         <TextField
-                                            id='outlined-textarea'
-                                            label='Phone Number'
-                                            placeholder=''
+                                            id="outlined-textarea"
+                                            label="Email"
+                                            value={email}
+                                            placeholder=""
                                             fullWidth
-                                            variant='outlined'
+                                            variant="outlined"
                                             style={{
                                                 marginLeft: '0px',
-                                                borderRadius: '0px',
+                                                borderRadius: '0px'
                                             }}
                                             onChange={(e) => {
-                                                setPhoneNumber(e.target.value);
+                                                setEmail(e.target.value);
                                             }}
                                         />
-                                    </div>
-                                    <div className='col-lg-12 text-center'>
-                                        <OtpDrawer
-                                            phoneNumber={phoneNumber}
-                                            setState={setState}
-                                            state={state}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </Div>
-                </Div>
-            </Div>
-        </div>
-    );
-
-    return (
-        <div>
-            <button
-                type='button'
-                className=' btn btn-lg align-self-center font-weight-bold'
-                onClick={toggleDrawer('right', true)}
-            >
-                {'Login'}
-            </button>
-            <Drawer
-                anchor={'right'}
-                open={state['right']}
-                onClose={toggleDrawer('right', false)}
-            >
-                {list('right')}
-            </Drawer>
-        </div>
-    );
-}
-
-function OtpDrawer({ phoneNumber, setState, state }) {
-    const [otp, setOtp] = useState('');
-    const classes = useStyles();
-    const [state2, setState2] = React.useState({
-        bottom: false,
-    });
-
-    const toggleOTPDrawer = (anchor, open) => (event) => {
-        if (
-            event.type === 'keydown' &&
-            (event.key === 'Tab' || event.key === 'Shift')
-        ) {
-            return;
-        }
-
-        setState2({ ...state2, [anchor]: open });
-    };
-
-    const handleVerify = () => {
-        // console.log(phoneNumber, otp);
-        // console.log(setState, state);
-
-        axios
-            .post(
-                `${process.env.REACT_APP_API_URL}/api/customer/login/verify`,
-                {
-                    phoneNumber: phoneNumber,
-                    otp: otp,
-                },
-            )
-            .then((res) => {
-                // console.log(res);
-                // alert('Login Successfull');
-                setState2({ ...state2, right: false });
-                setState({ ...state, right: false });
-                localStorage.setItem('customerData', JSON.stringify(res.data));
-                // history.push('/Restaurants');
-            })
-            .catch((err) => {
-                console.log(err.response.data);
-                alert(err.response.data);
-            });
-    };
-
-    const getOtp = () => {
-        axios
-            .post(`${process.env.REACT_APP_API_URL}/api/customer/login`, {
-                phoneNumber: phoneNumber,
-            })
-            .then((res) => {
-                // console.log(res);
-                // alert('OTP have been sent Customer Phone Number');
-                setState2({ ...state2, right: true });
-            })
-            .catch((err) => {
-                console.log(err.response.data);
-                alert(err.response.data);
-            });
-    };
-
-    const list = (anchor) => (
-        <div
-            className={clsx(classes.list, {
-                [classes.fullList]: anchor === 'top' || anchor === 'bottom',
-            })}
-            style={{ right: 0 }}
-            role='presentation'
-        >
-            <Div className='container mt-3' style={{ width: '90%' }}>
-                <Div className='row'>
-                    <Div className='col text-left'>
-                        <button
-                            type='button'
-                            className='btn btn-sm'
-                            onClick={toggleOTPDrawer(anchor, false)}
-                        >
-                            <i className='fas fa-arrow-left fa-lg'></i>
-                        </button>
-                        <div className='container mt-2'>
-                            <div className='row'>
-                                <div className='col-lg-6 ml-3'>
-                                    <h3>Enter OTP</h3>
-                                    <small>
-                                        We've sent an OTP to your phone number.
-                                    </small>
-                                </div>
-                                <div className='col-lg-4 ml-4'>
-                                    <img
-                                        className='img-fluid'
-                                        style={{
-                                            width: '105px',
-                                            height: '100px',
-                                            borderRadius: '50%',
-                                            fload: 'right',
-                                        }}
-                                        src='https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/Image-login_btpq7r'
-                                        alt='logo of wrap'
-                                    />
-                                </div>
-                            </div>
-                            <div className='container-fluid mt-5'>
-                                <div className='row'>
-                                    <div className='col-lg-12'>
                                         <TextField
-                                            label='Phone Number'
-                                            value={phoneNumber}
-                                            placeholder=''
+                                            type="password"
+                                            value={password}
+                                            id="outlined-textarea"
+                                            label="Password"
+                                            placeholder=""
                                             fullWidth
-                                            variant='outlined'
+                                            variant="outlined"
                                             style={{
                                                 marginLeft: '0px',
-                                                borderRadius: '0px',
-                                            }}
-                                        />
-                                    </div>
-                                    <div className='col-lg-12'>
-                                        <TextField
-                                            label='One time password'
-                                            placeholder=''
-                                            fullWidth
-                                            variant='outlined'
-                                            style={{
-                                                marginLeft: '0px',
-                                                borderRadius: '0px',
+                                                borderRadius: '0px'
                                             }}
                                             onChange={(e) => {
-                                                setOtp(e.target.value);
+                                                setPassword(e.target.value);
                                             }}
                                         />
                                     </div>
@@ -275,7 +123,7 @@ function OtpDrawer({ phoneNumber, setState, state }) {
                                                 width: '318px',
                                                 borderRadius: '2%',
                                             }}
-                                            onClick={handleVerify}
+                                            onClick={handleSubmit}
                                         >
                                             <p
                                                 style={{
@@ -283,7 +131,7 @@ function OtpDrawer({ phoneNumber, setState, state }) {
                                                     marginTop: '9px',
                                                 }}
                                             >
-                                                VERIFY OTP
+                                                Sign In
                                             </p>
                                         </button>
                                     </div>
@@ -299,31 +147,13 @@ function OtpDrawer({ phoneNumber, setState, state }) {
     return (
         <div>
             <button
-                type='button'
-                style={{
-                    background: '#fc8019',
-                    border: '1px solid #fc8019',
-                    color: 'white',
-                    marginTop: '15px',
-                    width: '318px',
-                    borderRadius: '2%',
-                }}
-                onClick={getOtp}
+                type="button"
+                className=" btn btn-lg align-self-center font-weight-bold"
+                onClick={toggleDrawer('right', true)}
             >
-                <p
-                    style={{
-                        fontWeight: 'bold',
-                        marginTop: '9px',
-                    }}
-                >
-                    {'LOGIN'}
-                </p>
+                {'Login'}
             </button>
-            <Drawer
-                anchor={'right'}
-                open={state2['right']}
-                onClose={toggleOTPDrawer('right', false)}
-            >
+            <Drawer anchor={'right'} open={state['right']} onClose={toggleDrawer('right', false)}>
                 {list('right')}
             </Drawer>
         </div>

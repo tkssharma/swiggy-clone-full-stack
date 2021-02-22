@@ -18,6 +18,7 @@ import {
 import SearchBar from '../../atoms/SearchBar';
 import LoginDrawer from '../../organisms/LoginDrawer';
 import RegisterDrawer from '../../organisms/RegisterDrawer';
+import Feature from '../../organisms/Feature';
 
 const HeroHeader = ({ props }) => {
 	return (
@@ -115,11 +116,12 @@ const HeroHeader = ({ props }) => {
 				<div className="col-5">
 					<MainImg
 						src="https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,h_1340/Dinner1-new_s93yyf"
-						height="400px"
+						height="450px"
 						alt="swiggy main"
 					/>
 				</div>
 			</div>
+			<Feature />
 		</Div>
 	);
 };
