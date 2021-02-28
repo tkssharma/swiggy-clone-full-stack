@@ -14,17 +14,13 @@ services:
       - gatekeeper_modules:/usr/src/app/node_modules
   postgres:
    volumes: 
-      - postgres_swiggy_data:/data/postgres
-  swiggy-ms:
-    volumes: 
-      - ./swiggy-ms/:/usr/src/app
-      - swiggy_modules:/usr/src/app/node_modules   
+      - postgres_api_data:/data/postgres  
   gateway-ms:
     volumes: 
       - ./gateway-ms/:/usr/src/app
       - gateway_modules:/usr/src/app/node_modules          
 volumes:
-  postgres_swiggy_data: {}
+  postgres_api_data: {}
   swiggy_modules: {}
   gateway_modules: {}
   swiggy_ui_modules: {}

@@ -3,13 +3,15 @@ services:
   postgres:
     image: postgres
     ports:
-      - 5432:5432
+      - 5436:5432
+    volumes:
+      - postgres_api_data:/data/postgres
+    restart: always
     environment:
-      POSTGRES_DB: swiggy_apis
-      POSTGRES_USER: swiggy
-      POSTGRES_PASSWORD: swiggy
+      POSTGRES_DB: admin
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
       PGDATA: /data/postgres
-    restart: unless-stopped
     networks:
       - swiggy-network
   swiggy-ms:
@@ -18,26 +20,10 @@ services:
     container_name: swiggy_ms
     environment:
       - NODE_ENV=local
-    ports:
-      - 4007:3000
-      - 8209:8202
     depends_on:
       - postgres
     networks:
-      - swiggy-network
-  gateway-ms:
-    build: ./gateway-ms/
-    image: gateway-ms
-    container_name: gateway-ms
-    environment:
-      - NODE_ENV=local
-    ports:
-      - 4007:3000
-      - 8209:8202
-    depends_on:
-      - postgres
-    networks:
-      - swiggy-network      
+      - swiggy-network     
 networks:
   swiggy-network:
     driver: bridge

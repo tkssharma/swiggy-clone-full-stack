@@ -1,10 +1,23 @@
-FROM node:carbon
-WORKDIR /usr/src/app
+FROM node:12-buster-slim
 
-COPY package.json ./
+WORKDIR /app
 
-RUN npm install
+COPY package.json package-lock.json /app/
 
-# Add your source files
-COPY . .
+RUN npm install && \
+    rm -rf /tmp/* /var/tmp/*
+
+COPY ./docker-utils/entrypoint/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
+COPY . /app
+
+RUN npm run build
+
 EXPOSE 3000
+
+USER node
+
+ENV TYPEORM_MIGRATION=ENABLE
+ENV NPM_INSTALL=ENABLE
+
+CMD npm run start:prod

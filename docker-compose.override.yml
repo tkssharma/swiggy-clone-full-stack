@@ -2,18 +2,19 @@ version: "3.5"
 services:
   postgres:
    volumes: 
-      - postgres_swiggy_data:/data/postgres
+      - postgres_api_data:/data/postgres
   swiggy-ms:
-    volumes: 
-      - ./swiggy-ms/:/usr/src/app
-      - swiggy_modules:/usr/src/app/node_modules   
-  gateway-ms:
-    volumes: 
-      - ./gateway-ms/:/usr/src/app
-      - gateway_modules:/usr/src/app/node_modules          
+   container_name: swiggy_ms
+   command: npm run start:debug
+   environment:
+     NPM_INSTALL: ENABLE
+     TYPEORM_MIGRATION: ENABLE
+   ports:
+     - 4000:3000
+     - 5858:5858
+   volumes:
+     - ./swiggy-ms:/app
+
 volumes:
-  postgres_swiggy_data: {}
+  postgres_api_data: {}
   swiggy_modules: {}
-  gateway_modules: {}
-  swiggy_ui_modules: {}
-  gatekeeper_modules: {}
