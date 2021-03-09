@@ -1,5 +1,9 @@
 version: "3.5"
 services:
+  nginx:
+    volumes:
+      - ./proxy/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./proxy/ssl:/etc/nginx/ssl:ro
   postgres:
    volumes: 
       - postgres_api_data:/data/postgres
@@ -14,7 +18,14 @@ services:
      - 5858:5858
    volumes:
      - ./swiggy-ms:/app
-
+  gatekeeper-ms:
+   container_name: gatekeeper_ms
+   command: npm run start:debug
+   ports:
+     - 4001:3000
+     - 5859:5858
+   volumes:
+     - ./gatekeeper-ms:/app     
 volumes:
   postgres_api_data: {}
   swiggy_modules: {}

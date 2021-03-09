@@ -1,5 +1,15 @@
 version: "3.5"
 services:
+  nginx:
+    image: nginx:1.11
+    ports:
+      - 88:80
+      - 443:443
+    depends_on:
+      - gatekeeper-ms
+      - swiggy-ui-ms
+    networks:
+      - swiggy-network
   postgres:
     image: postgres
     ports:
@@ -23,7 +33,15 @@ services:
     depends_on:
       - postgres
     networks:
-      - swiggy-network     
+      - swiggy-network   
+  gatekeeper-ms:
+    build: ./gatekeeper-ms/
+    image: gatekeeper-ms
+    container_name: gatekeeper_ms
+    environment:
+      - NODE_ENV=local
+    networks:
+      - swiggy-network           
 networks:
   swiggy-network:
     driver: bridge

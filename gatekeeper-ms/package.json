@@ -1,12 +1,13 @@
 {
-  "name": "zota-mz",
+  "name": "gatekeeper-service",
   "version": "1.0.0",
-  "description": "api backend for zota",
+  "description": "api backend as gatekeeper service to validate auth/authz",
   "author": "",
   "license": "MIT",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "debug": "nodemon",
+    "start:debug": "nodemon",
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "ts-node -r tsconfig-paths/register src/main.ts",
     "start:dev": "nodemon",
