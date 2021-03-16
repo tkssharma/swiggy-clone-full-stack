@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     }
 });
 
-export default function LoginDrawer() {
+export default function AuthLoginDrawer() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -32,7 +32,7 @@ export default function LoginDrawer() {
         auth.signInWithEmailAndPassword(email, password).catch(error => {
                setError("Error signing in with password and email!");
               console.error("Error signing in with password and email", error);
-        });
+        })
     }
 
     const toggleDrawer = (anchor, open) => (event) => {

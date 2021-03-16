@@ -1,6 +1,6 @@
 import React, { Component, createContext } from "react";
-export const UserContext = createContext({ user: null })
 import { auth } from "../../../firebase/firebase";
+export const UserContext = createContext({ user: null })
 
 export class UserProvider extends Component {
     state = {
@@ -8,6 +8,7 @@ export class UserProvider extends Component {
     };
     componentDidMount = async () => {
         auth.onAuthStateChanged(async userAuth => {
+            console.log(userAuth);
             this.setState(userAuth);
         });
     };
