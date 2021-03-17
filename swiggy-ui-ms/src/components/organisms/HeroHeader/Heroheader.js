@@ -19,8 +19,11 @@ import SearchBar from '../../atoms/SearchBar';
 import LoginDrawer from '../../organisms/LoginDrawer';
 import RegisterDrawer from '../../organisms/RegisterDrawer';
 import Feature from '../../organisms/Feature';
+import { useSelector } from  'react-redux';
 
 const HeroHeader = ({ props }) => {
+	const isLoggedIn = useSelector(state => state.authentication.loggedIn);
+	// alert(isLoggedIn);
 	return (
 		<Div className="container-fluid">
 			<div className="row">

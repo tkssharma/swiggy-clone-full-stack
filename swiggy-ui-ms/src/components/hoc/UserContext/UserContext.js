@@ -1,26 +1,34 @@
-import React, { Component, createContext } from "react";
+import React, { useEffect,useState, createContext } from "react";
 import { auth } from "../../../firebase/firebase";
+import { useDispatch } from 'react-redux'
+import { useHistory } from "react-router-dom";
+
+
 export const UserContext = createContext({ user: null })
 
-export class UserProvider extends Component {
-    state = {
-        user: null
-    };
-    componentDidMount = async () => {
-        auth.onAuthStateChanged(async userAuth => {
-            console.log(userAuth);
-            this.setState(userAuth);
-        });
-    };
+const UserProvider = (props) => {
+    const [user, setUser] = useState(null);
+    const dispatch = useDispatch();
+    let history = useHistory();
 
-    render() {
-        const { user } = this.state;
+    useEffect(() => {
+        const subscription = auth.onAuthStateChanged(async userAuth => {
+            if(userAuth) {
+                const token = await userAuth.getIdToken(true);
+                console.log(token);
+                const email = userAuth.email;
+                dispatch({ type: 'LOGIN_SUCCESS', data: {token, email} });
+                setUser(userAuth);
+                history.push('/restaurant');
+            }
+        });
+       return () => subscription();
+    }, [])
         return (
             <UserContext.Provider value={user}>
-                {this.props.children}
+                {props.children}
             </UserContext.Provider>
-        );
-    }
-}
+    );
+};
 
-export default UserProvider;
+export { UserProvider};
