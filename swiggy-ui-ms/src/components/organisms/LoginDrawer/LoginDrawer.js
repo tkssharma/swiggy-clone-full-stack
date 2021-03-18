@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 // import env from 'react-dotenv';
 import { auth} from '../../../firebase/firebase';
-import { useSelector} from 'react-redux';
+import { useSelector, useDispatch} from 'react-redux';
 const Div = styled.div`font-family: sans-serif;`;
 
 const useStyles = makeStyles({
@@ -21,6 +21,7 @@ const useStyles = makeStyles({
 
 export default function AuthLoginDrawer() {
     const isLoggedIn = useSelector(state => state.authentication.loggedIn);
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -34,6 +35,10 @@ export default function AuthLoginDrawer() {
                setError("Error signing in with password and email!");
               console.error("Error signing in with password and email", error);
         })
+    }
+    const logout = () => {
+        auth.signOut();
+        dispatch({type: 'LOGOUT'});
     }
 
     const toggleDrawer = (anchor, open) => (event) => {
@@ -54,9 +59,9 @@ export default function AuthLoginDrawer() {
             <Div className="container mt-3" style={{ width: '90%' }}>
                 <Div className="row">
                     <Div className="col text-left">
-                        { ! isLoggedIn && <button type="button" className="btn btn-sm" onClick={toggleDrawer(anchor, false)}>
+                        <button type="button" className="btn btn-sm" onClick={toggleDrawer(anchor, false)}>
                             <i className="fas fa-times fa-lg" />
-                        </button>}
+                        </button>
                         <div className="container mt-2">
                             <div className="row">
                                 <div className="col-lg-5 ml-3">
@@ -147,13 +152,20 @@ export default function AuthLoginDrawer() {
 
     return (
         <div>
-            <button
+            { !isLoggedIn && <button
                 type="button"
                 className=" btn btn-lg align-self-center font-weight-bold"
                 onClick={toggleDrawer('right', true)}
             >
                 {'Login'}
-            </button>
+            </button> }
+            { isLoggedIn && <button
+                type="button"
+                className=" btn btn-lg align-self-center font-weight-bold"
+                onClick={logout}
+            >
+                {'Logout'}
+            </button> }
             <Drawer anchor={'right'} open={state['right']} onClose={toggleDrawer('right', false)}>
                 {list('right')}
             </Drawer>

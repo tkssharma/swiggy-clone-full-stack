@@ -9,7 +9,7 @@ const Landing = (props) => {
 
   return (
   <Fragment>
-     <h1>Restaurant will oprn soon..</h1>
+     <h1>Restaurant will open soon..</h1>
     </Fragment>
     );
 };

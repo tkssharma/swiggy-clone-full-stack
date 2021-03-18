@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import { auth} from '../../../firebase/firebase';
-
+import { useSelector} from 'react-redux';
 const Div = styled.div`font-family: sans-serif;`;
 
 const useStyles = makeStyles({
@@ -19,6 +19,8 @@ const useStyles = makeStyles({
 });
 
 export default function RegisterDrawer() {
+	const isLoggedIn = useSelector(state => state.authentication.loggedIn);
+
 	const classes = useStyles();
 	const [ phNo, setPhNo ] = useState('');
 	const [ error, setError ] = useState('');
@@ -206,7 +208,7 @@ export default function RegisterDrawer() {
 
 	return (
 		<div>
-			<button
+			{ !isLoggedIn && <button
 				type="button"
 				className=" btn btn-lg align-self-center font-weight-bold"
 				onClick={toggleDrawer('right', true)}
@@ -217,7 +219,7 @@ export default function RegisterDrawer() {
 				}}
 			>
 				{'Sign up'}
-			</button>
+			</button> }
 			<Drawer anchor={'right'} open={state['right']} onClose={toggleDrawer('right', false)}>
 				{list('right')}
 			</Drawer>
