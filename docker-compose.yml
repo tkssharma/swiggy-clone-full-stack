@@ -7,7 +7,7 @@ services:
       - 443:443
     depends_on:
       - gatekeeper-ms
-      - swiggy-ui-ms
+      - swiggy-ms
     networks:
       - swiggy-network
   postgres:
@@ -41,7 +41,7 @@ services:
     environment:
       - NODE_ENV=local
     networks:
-      - swiggy-network           
+      - swiggy-network      
 networks:
   swiggy-network:
     driver: bridge
