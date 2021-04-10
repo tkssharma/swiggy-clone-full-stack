@@ -5,12 +5,14 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es6",
-    "allowJs": true,
-    "noEmit": true,
+    "target": "es2017",
     "sourceMap": true,
-    "outDir": "",
-    "baseUrl": "./"
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "strict": true,
+    "skipLibCheck": true
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"],
+  "include": ["src/**/*.ts"]
 }

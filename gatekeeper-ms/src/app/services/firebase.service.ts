@@ -1,13 +1,12 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import * as CONSTANT from '../constants.api';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import admin from '../../main';
-import { Logger } from '../../logger/logger';
+import * as CONSTANT from '../constants.api';
 
 @Injectable()
 export class AuthService {
+  public logger = new Logger(AuthService.name);
   constructor(
-    private logger: Logger
-  ) { }
+  ) {}
   private getToken(authToken: string): string {
     const match = authToken.match(/^Bearer (.*)$/);
     if (!match || match.length < 2) {
@@ -21,10 +20,10 @@ export class AuthService {
     try {
       const decodedToken: admin.auth.DecodedIdToken = await admin.auth().verifyIdToken(tokenString);
       const data = {email: decodedToken.email, uid: decodedToken.uid};
-      this.logger.info(`${JSON.stringify(decodedToken)}`);
+      this.logger.log(`${JSON.stringify(decodedToken)}`);
       return data;
     } catch (err) {
-      this.logger.error(`error while authenticate request ${err.message}`);
+      this.logger.log(`error while authenticate request ${err.message}`);
       throw new UnauthorizedException(err.message);
     }
   }

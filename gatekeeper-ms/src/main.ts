@@ -1,19 +1,16 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import { NestApplicationOptions } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
 
-import { AppModule } from './app/app.module';
-import { Logger } from './logger/logger';
-import { createDocument } from './swagger/swagger';
 import * as admin from 'firebase-admin';
-import * as dotenv from 'dotenv';
-dotenv.config();
+import { AppModule } from './app/app.module';
+import { createDocument } from './swagger/swagger';
 
-const NEST_LOGGING = false;
+
 async function bootstrap() {
   const opts: NestApplicationOptions = {};
-  console.log(process.env.FIREBASE_PRIVATE_KEY);
-  if (!NEST_LOGGING) { opts.logger = false; }
   admin.initializeApp({
     credential: admin.credential.cert({
       private_key: process.env.FIREBASE_PRIVATE_KEY,
@@ -23,7 +20,6 @@ async function bootstrap() {
     databaseURL: process.env.FIREBASE_DATABASE_URL
   });
   const app = await NestFactory.create(AppModule);
-  app.useLogger(app.get(Logger));
   SwaggerModule.setup('api/v1', app, createDocument(app));
   await app.listen(process.env.PORT || 3000 );
 
