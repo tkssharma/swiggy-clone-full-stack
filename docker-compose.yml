@@ -28,8 +28,6 @@ services:
     build: ./swiggy-ms/
     image: swiggy-ms
     container_name: swiggy_ms
-    environment:
-      - NODE_ENV=local
     depends_on:
       - postgres
     networks:
@@ -38,8 +36,6 @@ services:
     build: ./gatekeeper-ms/
     image: gatekeeper-ms
     container_name: gatekeeper_ms
-    environment:
-      - NODE_ENV=local
     networks:
       - swiggy-network      
 networks:

@@ -12,6 +12,7 @@ dotenv.config();
 const NEST_LOGGING = false;
 async function bootstrap() {
   const opts: NestApplicationOptions = {};
+  console.log(process.env.FIREBASE_PRIVATE_KEY);
   if (!NEST_LOGGING) { opts.logger = false; }
   admin.initializeApp({
     credential: admin.credential.cert({

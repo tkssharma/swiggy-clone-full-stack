@@ -21,11 +21,15 @@ services:
   gatekeeper-ms:
    container_name: gatekeeper_ms
    command: npm run start:debug
+   environment:
+     NPM_INSTALL: ENABLE
+     TYPEORM_MIGRATION: ENABLE
    ports:
      - 4001:3000
      - 5859:5858
    volumes:
-     - ./gatekeeper-ms:/app     
+     - ./gatekeeper-ms:/app
 volumes:
   postgres_api_data: {}
   swiggy_modules: {}
+  gatekeeper_modules: {}
