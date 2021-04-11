@@ -163,6 +163,22 @@ export class CreateRestaurantParam {
     @MinLength(4)
     public about_us!: string;
 
+    @ApiProperty({ description: '', required: false })
+    @IsOptional()
+    @IsString()
+    public logo_url!: string;
+
+    @ApiProperty({ description: '', required: false })
+    @IsOptional()
+    @IsString()
+    public average_time!: string;
+
+    @ApiProperty({ description: '', required: false })
+    @IsOptional()
+    @IsString()
+    public average_cost!: string;
+
+
     @ApiProperty({ description: '', required: true })
     @IsObject()
     @ValidateNested()

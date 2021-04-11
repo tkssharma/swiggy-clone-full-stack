@@ -5,6 +5,7 @@ import Drawer from '@material-ui/core/Drawer';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
+import { useHistory } from "react-router-dom";
 // import env from 'react-dotenv';
 import { auth} from '../../../firebase/firebase';
 import { useSelector, useDispatch} from 'react-redux';
@@ -22,6 +23,8 @@ const useStyles = makeStyles({
 export default function AuthLoginDrawer() {
     const isLoggedIn = useSelector(state => state.authentication.loggedIn);
     const dispatch = useDispatch();
+    let history = useHistory();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -31,8 +34,13 @@ export default function AuthLoginDrawer() {
     });
 
     const handleSubmit = () => {
-        auth.signInWithEmailAndPassword(email, password).catch(error => {
-               setError("Error signing in with password and email!");
+        auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          setState({ ...state, right: false });
+          setError('');
+        })
+        .catch(error => {
+               setError(error.message);
               console.error("Error signing in with password and email", error);
         })
     }
@@ -46,7 +54,11 @@ export default function AuthLoginDrawer() {
             return;
         }
         setState({ ...state, [anchor]: open });
+        setError('');
     };
+    const Navigate = () => {
+      history.push('/restaurant')
+    }
 
     const list = (anchor) => (
         <div
@@ -96,7 +108,8 @@ export default function AuthLoginDrawer() {
                                             variant="outlined"
                                             style={{
                                                 marginLeft: '0px',
-                                                borderRadius: '0px'
+                                                borderRadius: '0px',
+                                                marginTop: '15px'
                                             }}
                                             onChange={(e) => {
                                                 setEmail(e.target.value);
@@ -112,12 +125,16 @@ export default function AuthLoginDrawer() {
                                             variant="outlined"
                                             style={{
                                                 marginLeft: '0px',
-                                                borderRadius: '0px'
+                                                borderRadius: '0px',
+                                                marginTop: '15px'
                                             }}
                                             onChange={(e) => {
                                                 setPassword(e.target.value);
                                             }}
                                         />
+                                    </div>
+                                    <div className='col-lg-12 text-center'>
+                                      {error}
                                     </div>
                                     <div className='col-lg-12 text-center'>
                                         <button
@@ -161,7 +178,7 @@ export default function AuthLoginDrawer() {
             </button> }
             { isLoggedIn && <button
                 type="button"
-                className=" btn btn-lg align-self-center font-weight-bold"
+                className=" btn btn-lg  font-weight-bold"
                 onClick={logout}
             >
                 {'Logout'}

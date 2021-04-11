@@ -1,8 +1,8 @@
 import { Controller, Get, Req, UnauthorizedException } from '@nestjs/common';
 import { BadRequestException } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import * as CONSTANT from '../constants.api';
 import { Request } from 'express';
+import * as CONSTANT from '../constants.api';
 import { AuthService } from '../services/firebase.service';
 
 @ApiBearerAuth('authorization')

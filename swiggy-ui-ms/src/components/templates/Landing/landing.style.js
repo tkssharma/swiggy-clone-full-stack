@@ -38,8 +38,8 @@ export const City = styled.div`
 `;
 
 export const MainImg = styled.img`
-    height: 440px;
-    width: 630px;
+    height: 570px;
+    width: 100%;
 `;
 
 export const Logo = styled.img`

@@ -1,11 +1,11 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
-import RestaurantService from '../services/restaurant.service';
-import { ApiTags, ApiInternalServerErrorResponse, ApiOkResponse, ApiBadRequestResponse, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, 
+  ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PARAMETERS_FAILED_VALIDATION, RESULTS_RETURNED } from '../../constants.api';
 import { CreateRestaurantParam, RestaurantParamById, UpdateRestaurantParam } from '../dto/restaurant.dto';
-// /api/v1/restaurants
+import RestaurantService from '../services/restaurant.service';
 
-@Controller('restaurants')
+@Controller('/api/v1/restaurants')
 @ApiBearerAuth('authorization')
 @UsePipes(new ValidationPipe({
   whitelist: true,

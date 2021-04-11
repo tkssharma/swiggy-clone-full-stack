@@ -19,7 +19,8 @@
     "lint": "tslint -p tsconfig.json",
     "lint:fix": "tslint --fix -p tsconfig.json 'src/app/auth/**/*{.ts,.tsx}'",
     "lint:tests": "tslint -p tsconfig.json -c tslint.tests.json \"./src/**/*.spec.ts\" \"./test/**/*.ts\"",
-    "lint:tests:fix": "tslint --fix -p tsconfig.json -c tslint.tests.json \"./src/**/*.spec.ts\" \"./test/**/*.ts\""
+    "lint:tests:fix": "tslint --fix -p tsconfig.json -c tslint.tests.json \"./src/**/*.spec.ts\" \"./test/**/*.ts\"",
+    "migration:run": "echo 'hello'"
   },
   "keywords": [
     "typescript",

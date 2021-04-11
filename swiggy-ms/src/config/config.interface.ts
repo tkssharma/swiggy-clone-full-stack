@@ -26,4 +26,5 @@ export interface ConfigData {
 
   /** The New Relic key to use. */
   newRelicKey?: string;
+  gatekeeperServiceUrl?: string;
 }

@@ -5,6 +5,7 @@ export const DEFAULT_CONFIG: ConfigData = {
   db: {
     url: process.env.DATABASE_URL,
   },
+  gatekeeperServiceUrl: '',
   logLevel: 'info',
   newRelicKey: '',
 };

@@ -10,7 +10,6 @@ const LISTEN_PORT = 3000;
 async function bootstrap() {
   const opts: NestApplicationOptions = {logger: true};
   const app = await NestFactory.create(AppModule, opts);
-  app.setGlobalPrefix('/api/v1');
   SwaggerModule.setup('/api/v1', app, createDocument(app));
   await app.listen(process.env.PORT || LISTEN_PORT);
 }

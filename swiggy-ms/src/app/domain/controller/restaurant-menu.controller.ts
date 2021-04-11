@@ -1,10 +1,11 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
-import { ApiTags, ApiInternalServerErrorResponse, ApiOkResponse, ApiBadRequestResponse, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth,
+   ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PARAMETERS_FAILED_VALIDATION, RESULTS_RETURNED } from '../../constants.api';
 import { CreateRestaurantMenuParam, RestaurantMenuParamById, RestaurantParamById } from '../dto/restaurant.dto';
 import RestaurantMenuService from '../services/restaurant-menu.service';
 
-@Controller('restaurants')
+@Controller('/api/v1/restaurants')
 @ApiBearerAuth('authorization')
 @UsePipes(new ValidationPipe({
   whitelist: true,
@@ -52,8 +53,8 @@ export class RestaurantMenuController {
   @ApiBadRequestResponse({ description: PARAMETERS_FAILED_VALIDATION })
   @ApiInternalServerErrorResponse({ description: 'data has been fetched successfully' })
   @Post('/:id/menu')
-  public async createRestaurantMenuById(@Param() params: RestaurantParamById, 
-  @Body() data: CreateRestaurantMenuParam) {
+  public async createRestaurantMenuById(@Param() params: RestaurantParamById,
+                                        @Body() data: CreateRestaurantMenuParam) {
     try {
       return this.menuService.create(params, data);
     } catch (err) {

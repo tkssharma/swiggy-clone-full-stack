@@ -19,7 +19,6 @@ const UserProvider = (props) => {
                 const email = userAuth.email;
                 dispatch({ type: 'LOGIN_SUCCESS', data: {token, email} });
                 setUser(userAuth);
-                history.push('/restaurant');
             }
         });
        return () => subscription();

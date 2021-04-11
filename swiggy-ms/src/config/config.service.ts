@@ -26,7 +26,8 @@ export class ConfigService {
       env: env.NODE_ENV || DEFAULT_CONFIG.env,
       db: this.parseDbConfigFromEnv(env, DEFAULT_CONFIG.db),
       logLevel: env.LOG_LEVEL || DEFAULT_CONFIG.logLevel,
-      newRelicKey: env.NEW_RELIC_KEY || DEFAULT_CONFIG.newRelicKey
+      newRelicKey: env.NEW_RELIC_KEY || DEFAULT_CONFIG.newRelicKey,
+      gatekeeperServiceUrl: env.GATEKEEPER_SERVICE_URL || DEFAULT_CONFIG.gatekeeperServiceUrl,
 
     };
   }

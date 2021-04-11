@@ -33,7 +33,12 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "generate": "plop --plopfile generators/index.js",
+        "test:coverage": "jest --coverage",
+        "lint": "eslint src/",
+        "lint:fix": "yarn run lint -- --fix",
+        "pretty-quick": "pretty-quick"
     },
     "eslintConfig": {
         "extends": [

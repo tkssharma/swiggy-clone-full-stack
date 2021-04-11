@@ -14,6 +14,18 @@ export default class Restaurant {
     @Column({ type: 'varchar', length:255, nullable: true})
     public website!: string;
 
+    @Column({ type: 'varchar', length:255, nullable: true})
+    public rating!: string;
+
+    @Column({ type: 'varchar', length:255, nullable: true})
+    public average_time!: string;
+
+    @Column({ type: 'varchar', length:255, nullable: true})
+    public average_cost!: string;
+
+    @Column({ type: 'varchar', length:255, nullable: true})
+    public logo_url!: string;
+
     @Column({ type: 'varchar'})
     public about_us!: string;
 
