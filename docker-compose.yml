@@ -3,7 +3,7 @@ services:
   nginx:
     image: nginx:1.11
     ports:
-      - 88:80
+      - 80:80
       - 443:443
     depends_on:
       - gatekeeper-ms
@@ -13,7 +13,7 @@ services:
   postgres:
     image: postgres
     ports:
-      - 5436:5432
+      - 5438:5432
     volumes:
       - postgres_api_data:/data/postgres
     restart: always

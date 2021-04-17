@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DeleteResult, Repository } from "typeorm";
-import { AddressDto, CreateRestaurantParam, RestaurantParamById, UpdateRestaurantParam } from "../dto/restaurant.dto";
+import { AddressDto, CreateRestaurantParam, RestaurantParamById, RestaurantSearchParam, UpdateRestaurantParam } from "../dto/restaurant.dto";
 import Address from "../entities/address.entity";
 import Restaurant from "../entities/restaurant.entity";
 
@@ -16,16 +16,25 @@ export default class RestaurantService {
   public async create(data: CreateRestaurantParam): Promise<Restaurant> {
     try {
       const existingRestaurant = await this.restaurantRepo.findOne({where: {name: data.name}});
-      if(existingRestaurant) {
+      if (existingRestaurant) {
         existingRestaurant.about_us = data.about_us;
         existingRestaurant.name = data.name;
+        existingRestaurant.type = data.type;
+        existingRestaurant.average_time = data.average_time;
+        existingRestaurant.logo_url = data.logo_url;
+        existingRestaurant.average_cost = data.average_cost;
+        existingRestaurant.type = data.type;
         existingRestaurant.website = data.website;
-        const restaurant = await this.restaurantRepo.save(existingRestaurant);
-        return restaurant;
+        return await this.restaurantRepo.save(existingRestaurant);
       } else {
         const restaurant = this.restaurantRepo.create();
         restaurant.about_us = data.about_us;
         restaurant.name = data.name;
+        restaurant.type = data.type;
+        restaurant.logo_url = data.logo_url;
+        restaurant.average_time = data.average_time;
+        restaurant.average_cost = data.average_cost;
+        restaurant.type = data.type;
         restaurant.website = data.website;
         const newRestaurant = await this.restaurantRepo.save(restaurant);
         await this.createAddress(data.address, newRestaurant);
@@ -35,7 +44,12 @@ export default class RestaurantService {
       throw err;
     }
   }
-  public async createAddress(addressData: AddressDto, restaurant: Restaurant): Promise<any> {
+  public async getDataBySearch(params: RestaurantSearchParam) {
+    return this.restaurantRepo.createQueryBuilder('Restaurant')
+    .where('Restaurant.type like :type', { type: `%${params.type}%` })
+    .getMany();
+  }
+    public async createAddress(addressData: AddressDto, restaurant: Restaurant): Promise<any> {
     try {
       const address = this.addressRepo.create();
       const payload = { ...address, ...addressData };
@@ -46,7 +60,7 @@ export default class RestaurantService {
     }
   }
   public async getAll(): Promise<Restaurant[]> {
-    return this.restaurantRepo.find({ relations: ['address','restaurant_menu']});
+    return this.restaurantRepo.find({ relations: ['address', 'restaurant_menu']});
   }
   private async findById(id: string): Promise<Restaurant | undefined> {
     return this.restaurantRepo.findOne({ where: { id } });

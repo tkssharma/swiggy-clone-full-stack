@@ -11,11 +11,11 @@ services:
    container_name: swiggy_ms
    command: npm run start:debug
    environment:
-     NPM_INSTALL: ENABLE
-     TYPEORM_MIGRATION: ENABLE
+     NPM_INSTALL: DISABLE
+     TYPEORM_MIGRATION: DISABLE
    ports:
      - 4000:3000
-     - 5858:5858
+     - 5850:5858
    volumes:
      - ./swiggy-ms:/app
   gatekeeper-ms:
@@ -25,8 +25,8 @@ services:
      NPM_INSTALL: ENABLE
      TYPEORM_MIGRATION: ENABLE
    ports:
-     - 4001:3000
-     - 5859:5858
+     - 4004:3000
+     - 5851:5858
    volumes:
      - ./gatekeeper-ms:/app
 volumes:

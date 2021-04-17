@@ -15,6 +15,9 @@ export default class Restaurant {
     public website!: string;
 
     @Column({ type: 'varchar', length:255, nullable: true})
+    public type!: string;
+
+    @Column({ type: 'varchar', length:255, nullable: true})
     public rating!: string;
 
     @Column({ type: 'varchar', length:255, nullable: true})

@@ -95,7 +95,7 @@ function Navigator() {
 		}
 
 		if (localStorage.getItem('Coordinates') == null) {
-			setPlaceName('Karnatak, India');
+			setPlaceName('Delhi, India');
 		} else {
 			setPlaceName(JSON.parse(localStorage.getItem('Coordinates')).place_name);
 		}
