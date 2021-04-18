@@ -1,5 +1,5 @@
 import { RestaurantAPIConstants } from '../constants';
-const initialState = { restaurant: [], topPicks: [], veg: [], nonVeg: [], premium: [], exclusive: [], error: '' };
+const initialState = {selectedRestaurant : null, restaurant: [], topPicks: [], veg: [], nonVeg: [], premium: [], exclusive: [], error: '' };
 
 export function restaurant(state = initialState, action) {
   switch (action.type) {
@@ -16,7 +16,11 @@ export function restaurant(state = initialState, action) {
         return Object.assign({}, state, { topPicks: action.payload.data });
       }
     case RestaurantAPIConstants.FETCH_RESTAURANT_FAILURE:
-      return Object.assign({}, initialState, { error: action.payload.error });
+      return Object.assign({}, state, { error: action.payload.error });
+    case RestaurantAPIConstants.FETCH_SINGLE_RESTAURANT_SUCCESS:
+      return Object.assign({}, state, { selectedRestaurant: action.payload.data });
+    case RestaurantAPIConstants.FETCH_SINGLE_RESTAURANT_FAILURE:
+        return Object.assign({}, state, { error: action.payload.error });  
     default:
       return state;
   }

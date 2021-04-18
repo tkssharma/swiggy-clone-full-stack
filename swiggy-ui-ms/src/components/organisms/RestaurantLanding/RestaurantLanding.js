@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import HotelCard from '../../molecules/RestaurantCard';
-import { getRestaurants } from '../../../redux/actions/api.action'
+import { getRestaurants } from '../../../redux/actions/restaurant.action'
 const Wrapper = styled.div`
     color: #535665;
     font-family: sans-serif;

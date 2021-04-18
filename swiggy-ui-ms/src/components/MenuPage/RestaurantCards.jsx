@@ -70,36 +70,14 @@ const Wrapper = styled.div`
 `;
 
 function RestaurantCards(props) {
-  const dispatch = useDispatch();
-  const state = useSelector((state) => state);
-  const { cart } = state;
-  const [qty, setqty] = useState(0);
   const { data } = props;
-  const productInCart = cart.find((item) => item._id === data._id) || {
-    qty: 0,
-  };
-
-  const handleAdd = (data) => {
-    setqty(qty + 1);
-    dispatch(handleCart(data));
-  };
-
-  const handleInc = () => {
-    setqty(qty + 1);
-    dispatch(handleIncrement(data._id));
-  };
-
-  const handleDec = () => {
-    setqty(qty - 1);
-    dispatch(handledecrement(data._id));
-  };
 
   return (
     <Wrapper>
       <div className="container-fluid">
         <div className="row">
           <div className="col-lg-7 mt-5">
-            {data.veg ? (
+            {data.type == 'veg' ? (
               <div
                 className="p-1"
                 style={{
@@ -130,32 +108,23 @@ function RestaurantCards(props) {
                 {data.price}
               </small>
               <br />
-              <small className="mb-5">{data.description}</small>
+              <small className="mb-5">{data.desc}</small>
             </div>
           </div>
           <div className="col-lg-5 mt-4 mb-5 position-relative">
-            <img src={data.img_url} alt="item" className="p-2" />
+            <img src={data.media} alt="item" className="p-2" />
             <div>
-              {productInCart && productInCart.qty === 0 ? (
-                <div
-                  className="addCart col-5 text-center py-2 text-success"
-                  onClick={() => handleAdd(data)}
-                >
-                  ADD
-                </div>
-              ) : (
                 <div className="addCart">
-                  <button className="buttoncart" onClick={() => handleDec()}>
+                  <button className="buttoncart">
                     -
                   </button>
                   <button className="buttoncart">
-                    {productInCart && productInCart.qty}
+                    0
                   </button>
-                  <button className="buttoncart" onClick={() => handleInc()}>
+                  <button className="buttoncart" >
                     +
                   </button>
                 </div>
-              )}
             </div>
           </div>
         </div>

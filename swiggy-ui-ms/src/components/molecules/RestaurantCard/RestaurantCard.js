@@ -62,7 +62,7 @@ const HotelCard = (props) => {
 
   const goTo = () => {
     localStorage.setItem('hotel', JSON.stringify(data));
-    history.push('/MenuPage');
+    history.push(`/restaurant/menu/${data.id}`);
   };
   // console.log(data);
   return (
