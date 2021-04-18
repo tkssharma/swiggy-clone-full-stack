@@ -66,7 +66,7 @@ export default class RestaurantService {
     return this.restaurantRepo.findOne({ where: { id } });
   }
   public async getById(id: string): Promise<Restaurant | undefined> {
-    return this.restaurantRepo.findOne({ where: { id } });
+    return this.restaurantRepo.findOne({ where: { id }, relations: ['address', 'restaurant_menu']});
   }
   public async delete(data: RestaurantParamById): Promise<DeleteResult> {
     const Restaurant = await this.findById(data.id);
