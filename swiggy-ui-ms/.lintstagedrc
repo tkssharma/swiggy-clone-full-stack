@@ -1,6 +1,0 @@
-{
-    "*.{js,jsx}": [
-      "pretty-quick --staged",
-      "yarn run lint"
-    ]
-  }
