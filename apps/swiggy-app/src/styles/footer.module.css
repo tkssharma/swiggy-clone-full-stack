@@ -1,0 +1,39 @@
+.main_container{
+    background-color: black;
+    padding: 10px 70px;
+    
+}
+.container{
+    background-color:black ;
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    justify-content: space-between;
+
+
+}
+.container>div{
+   
+    padding: 40px;
+
+}
+.container>div>h4{
+   color: rgb(227, 217, 217);
+
+   margin: 10px 0px;
+}
+.container>div>p{
+  color: white;
+  margin: 10px;
+}
+.hr{
+    color: white;
+   margin: 50px 60px;
+    background-color: white;   
+}
+.icon{
+    display: flex;
+    gap: 10px;
+    color: white;
+    font-size:30px ;
+}

@@ -1,22 +1,24 @@
 import React, { useEffect, useState, createContext } from "react";
-import { auth } from "../../../firebase/firebase";
+import { firebaseAuth } from "../../../firebase/firebase";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 export const UserContext = createContext({ user: null });
 
 const UserProvider = (props) => {
   const [user, setUser] = useState(null);
   const dispatch = useDispatch();
-  let history = useHistory();
 
   useEffect(() => {
-    const subscription = auth.onAuthStateChanged(async (userAuth) => {
+    const subscription = firebaseAuth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const token = await userAuth.getIdToken(true);
-        console.log(token);
         const email = userAuth.email;
-        dispatch({ type: "LOGIN_SUCCESS", data: { token, email } });
+        console.log(userAuth);
+
+        dispatch({
+          type: "LOGIN_SUCCESS",
+          payload: { token, email, name: email, username: email },
+        });
         localStorage.setItem("access_token", token);
         setUser(userAuth);
       }
