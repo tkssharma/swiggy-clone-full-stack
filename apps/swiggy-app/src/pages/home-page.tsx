@@ -33,11 +33,7 @@ const HomePage = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 
 	return loading ? (
 		<div className='h-screen w-screen grid place-items-center bg-[#fbfbfb]'>
-			<img
-				className=''
-				src='https://cdn.dribbble.com/users/58386/screenshots/11074623/media/c2c3b6f8a9d948c2cf901880e63e929f.gif'
-				alt='burgerLoading'
-			/>
+			<span>loading..</span>
 		</div>
 	) : (
 		<>

@@ -1,67 +1,73 @@
-# nodejs-nestjs-template
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+</p>
 
-Use this template for any new custom code service that utilises nodejs.
-The custom code service will accept work from the external task listener and report progress and results back to it.
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-For API specs visit http://\<endpoint>/api
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-Health check available at http://\<endpoint>/health
+## Description
 
-##### How to run:
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-Copy files
+## Installation
 
-```
-cp env.example .env
-```
-
-Running in docker
-
-```
-docker-compose build
-docker-compose up
-
-# Running tests
-docker-compose exec node npm run test
-
-# Running tests (only unit or e2e)
-docker-compose exec node npm run test:unit
-docker-compose exec node npm run test:e2e
-```
-
-Please ensure to set the right environment variables in the .env file.
-
-##### Debugging:
-
-For debugging support, copy the provided docker compose override
-
-```
-cp docker-compose.override.debug.yml docker-compose.override.yml
+```bash
+$ npm install
 ```
 
-Then configure your inspector to attach to port 5858
+## Running the app
 
-##### Next steps:
+```bash
+# development
+$ npm run start
 
-###### Add tasks
+# watch mode
+$ npm run start:dev
 
-- Create tasks in `src/app/domain/`, use `adder.task.ts` as an example
-- Create task specs for testing, use `adder.task.spec.ts` as an example
-- Create end-2-end tests in `test/`, use `task.e2e-spec.ts` as an example
+# production mode
+$ npm run start:prod
+```
 
-###### Add data entities
+## Test
 
-- Create entity definitions in `src/app/domain/entities/`, use `example.ts` as an example
-- Create entity services in `src/app/domain/services/`, use `example.service.ts` as an example
-- Create entity service specs for testing, use `example.service.spec.ts` as an example
+```bash
+# unit tests
+$ npm run test
 
-###### Add config settings
+# e2e tests
+$ npm run test:e2e
 
-- Add config setting to `.env`, also don't forget `env.example` and `env.test`
-- Add new properties to `src/config/config.interface.ts` and defaults for the properties to `src/config/config.default.ts`
-- Add parsing for new config settings to `src/config/config.service.ts`
-- Extend `config.service.spec.ts` to include new tests as needed
+# test coverage
+$ npm run test:cov
+```
 
-#### License
+## Support
 
-Apache 2.0
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+
+## Stay in touch
+
+- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
+
+## License
+
+Nest is [MIT licensed](LICENSE).

@@ -1,35 +1,14 @@
-version: "3.5"
+version: '3'
 services:
-  nginx:
+  postgres-restaurant:
+    environment:
+      - POSTGRES_USER=api
+      - POSTGRES_PASSWORD=development_pass
+      - POSTGRES_MULTIPLE_DATABASES="restaurant-api","restaurant-api-testing"
     volumes:
-      - ./proxy/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./proxy/ssl:/etc/nginx/ssl:ro
-  postgres:
-   volumes: 
-      - postgres_api_data:/data/postgres
-  swiggy-ms:
-   container_name: swiggy_ms
-   command: npm run start:debug
-   environment:
-     NPM_INSTALL: DISABLE
-     TYPEORM_MIGRATION: DISABLE
-   ports:
-     - 4000:3000
-     - 5850:5858
-   volumes:
-     - ./swiggy-ms:/app
-  gatekeeper-ms:
-   container_name: gatekeeper_ms
-   command: npm run start:debug
-   environment:
-     NPM_INSTALL: ENABLE
-     TYPEORM_MIGRATION: ENABLE
-   ports:
-     - 4004:3000
-     - 5851:5858
-   volumes:
-     - ./gatekeeper-ms:/app
+      - ./docker-utils:/docker-entrypoint-initdb.d
+      - restaurant_api_data:/data/postgres
+    ports:
+      - 5435:5432          
 volumes:
-  postgres_api_data: {}
-  swiggy_modules: {}
-  gatekeeper_modules: {}
+  restaurant_api_data: {}

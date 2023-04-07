@@ -1,44 +1,6 @@
-version: "3.5"
+version: '3.6'
 services:
-  nginx:
-    image: nginx:1.11
-    ports:
-      - 80:80
-      - 443:443
-    depends_on:
-      - gatekeeper-ms
-      - swiggy-ms
-    networks:
-      - swiggy-network
-  postgres:
+  postgres-restaurant:
     image: postgres
-    ports:
-      - 5438:5432
-    volumes:
-      - postgres_api_data:/data/postgres
-    restart: always
-    environment:
-      POSTGRES_DB: admin
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      PGDATA: /data/postgres
-    networks:
-      - swiggy-network
-  swiggy-ms:
-    build: ./swiggy-ms/
-    image: swiggy-ms
-    container_name: swiggy_ms
-    depends_on:
-      - postgres
-    networks:
-      - swiggy-network   
-  gatekeeper-ms:
-    build: ./gatekeeper-ms/
-    image: gatekeeper-ms
-    container_name: gatekeeper_ms
-    networks:
-      - swiggy-network      
-networks:
-  swiggy-network:
-    driver: bridge
-    name: swiggy-network
+    restart: unless-stopped
+  

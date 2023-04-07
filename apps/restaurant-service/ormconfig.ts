@@ -8,11 +8,11 @@ module.exports = {
       ? { rejectUnauthorized: false }
       : false,
   logging: true,
-  entities: ["dist/app/domain/entities/**/*.js"],
-  migrations: ["dist/migrations/**/*.js"],
-  subscribers: ["dist/subscriber/**/*.js"],
+  entities: ["dist/src/app/domain/**/*.entity.js"],
+  migrations: ["dist/src/storage/database/migrations/**/*.js"],
+  subscribers: ["dist/src/storage/database/subscriber/**/*.js"],
   cli: {
-    entitiesDir: "src/app/domain/entities",
+    entitiesDir: "src/app/domain/**/*.entity.js",
     migrationsDir: "src/migrations",
     subscribersDir: "src/subscriber",
   },

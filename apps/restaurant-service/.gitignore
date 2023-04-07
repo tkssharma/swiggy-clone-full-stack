@@ -1,32 +1,35 @@
-.DS_Store
-node_modules
+# compiled output
 /dist
-*/dist
-.env
-build
-coverage
-.vscode
+/node_modules
 
-/tests/e2e/videos/
-/tests/e2e/screenshots/
-
-# local env files
-.env.local
-.env.development
-.env.production
-.env.*.local
-
-# Log files
+# Logs
+logs
+*.log
 npm-debug.log*
+pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
+lerna-debug.log*
 
-# Editor directories and files
-.idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# OS
+.DS_Store
+
+# Tests
+/coverage
+/.nyc_output
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

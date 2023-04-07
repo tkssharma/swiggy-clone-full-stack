@@ -24,7 +24,6 @@ const INITIAL_STATE = {
 
 // userSchema -> { username: "", name: "", phn: "", password: "" }
 export function AuthReducer(state = INITIAL_STATE, { type, payload }: any) {
-  alert(type, payload);
   switch (type) {
     case LOGIN_SUCCESS:
       return {
