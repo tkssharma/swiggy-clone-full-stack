@@ -1,5 +1,3 @@
-// import { motion } from "framer-motion";
-// import SearchIcon from "@mui/icons-material/Search";
 import biryaniImg from "./Images/biriyani1-img.png";
 import burger from "./Images/burgur-img.png";
 import cakeDessert from "./Images/cakeDessert-img.png";
@@ -26,22 +24,11 @@ const Search = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 	const [isSortBox, setIsSortBox] = useState(false);
 
 	function handleVoiceSearch() {
-		// var recognition = new webkitSpeechRecognition();
-
-		// recognition.lang = "en-GB";
-
-		// recognition.onresult = function (event: any) {
-		// 	setDishSearch(event.results[0][0].transcript);
-			// data();
-		// };
-		//recognition.start();
 	}
 
 	function handleDishSearch(e:any) {
 		setDishSearch(e.target.value);
 	}
-
-	// console.log(filters);
 
 	function handleFilterApply(filter: any) {
 		let newFilters: any = {};
@@ -81,7 +68,6 @@ const Search = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 				let toMatch = new RegExp(dishSearch, "i");
 				const search = data.filter((dish: any) => dish.name.match(toMatch));
 				setSearchResults(search);
-				// console.log(`https://swiggy-api.glitch.me/dishes?${q}${sort}`);
 			})();
 		}, 700);
 	}, [dishSearch, filters, sort]);
@@ -275,11 +261,3 @@ const Search = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 };
 
 export default Search;
-{
-	/* <div className=' flex max-w-[1200px] h-screen  mt-14 m-auto '>
-
-	 <div style={{margin:'0 auto'}}>	<input style={{width:'900px'}} className="p-5 text-lg   border border-slate-700   h-14 " type="text " placeholder="Search for restaurants and food"  />{<SearchIcon style={{ position:'absolute', right:'28%',top:'16%'}}/>}</div>
-	 <div className=''> asdfgh</div>
-	 </div>
-	  */
-}

@@ -1,20 +1,21 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addRestaurant } from "../../redux/restaurant/restaurant-action";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
 const RestaurantCard = ({
 	restaurantDetails: {
-		_id: id,
+		id: id,
 		name,
 		city,
-		image,
-		discription,
+    ratings,
+    average_price,
+		thumbnails,
+		description,
 		rating,
 		deliverTime,
 		cheapestPrice,
-		menu,
+		dishes,
 	},
 }: any) => {
 	const dispatch = useDispatch();
@@ -22,23 +23,7 @@ const RestaurantCard = ({
 	const [quickView, setQuickView] = useState(false);
 
 	function handleNavigate(id: any) {
-		(async () => {
-			const restaurant = {
-				id,
-				name,
-				city,
-				image,
-				rating,
-				deliverTime,
-				cheapestPrice,
-				discription,
-				menu,
-			};
-
-			dispatch(addRestaurant(restaurant));
-
-			navigate(`/restaurants/${id}`);
-		})();
+     navigate(`/restaurants/${id}`)
 	}
 
 	return (
@@ -50,12 +35,12 @@ const RestaurantCard = ({
 				className='flex flex-col items-center'
 				onClick={(e) => handleNavigate(id)}>
 				<img
-					src={image}
+					src={thumbnails && thumbnails [0]}
 					alt={name}
 					className='relative h-40  z-0'
 				/>
 				<p className='text-sm w-full font-semibold mt-4'>{name}</p>
-				<p className='text-xs w-full  text-gray-500'>{discription}</p>
+				<p className='text-xs w-full  text-gray-500'>{description}</p>
 				<div className='mt-4 flex w-full justify-between pb-4 border-b'>
 					<span className='text-xs h-4 items-center  text-white px-2 bg-green-500 flex w-fit'>
 						<svg
@@ -69,7 +54,7 @@ const RestaurantCard = ({
 								clipRule='evenodd'
 							/>
 						</svg>
-						{rating}
+						{ratings}
 					</span>
 					<span className='text-xs'>
 						{deliverTime > 59
@@ -77,7 +62,7 @@ const RestaurantCard = ({
 							: deliverTime}{" "}
 						MINS{" "}
 					</span>
-					<span className='text-xs'>{cheapestPrice * 2}₹ for Two </span>
+					<span className='text-xs'>{average_price}₹ for Two </span>
 				</div>
 				<div
 					onMouseOver={(e) => setQuickView(true)}
@@ -96,11 +81,11 @@ const RestaurantCard = ({
 									MENU{" "}
 								</h1>
 								<div className='flex flex-col px-4'>
-									{menu?.map((menuItem: any, idx: number) => (
+									{dishes?.map((menuItem: any, idx: number) => (
 										<p
 											className={`text-sm mb-2`}
 											key={idx}>
-											{menuItem.category}
+											{menuItem.name}
 										</p>
 									))}
 								</div>

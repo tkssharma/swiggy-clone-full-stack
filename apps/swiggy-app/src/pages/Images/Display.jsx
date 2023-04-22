@@ -3,26 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import DishSearchComponent from "../../components/restaurant-list/dish-search-component";
-import { addRestaurant } from "../../redux/restaurant/restaurant-action";
 
 function Display({ dish }) {
 	const [restaurant, setRestaurant] = useState(null);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	useEffect(() => {
-		(async () => {
-			const { data } = await axios.get(
-				`http://localhost:8080/restaurants/${dish.restaurant[0]}`
-			);
-			setRestaurant(data);
-		})();
-	}, []);
-
-	function handleNavigate(e) {
-		dispatch(addRestaurant(restaurant));
-		navigate(`/restaurants/${restaurant.id}`);
-	}
 
 	return !restaurant ? null : (
 		<div

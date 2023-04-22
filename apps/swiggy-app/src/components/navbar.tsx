@@ -5,10 +5,9 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {firebaseAuth} from '../firebase/firebase'
 import Cart from "./cart";
-import { logout } from "../redux/auth/auth-action";
 import { useToast } from "@chakra-ui/react";
 import TopLoading from "./top-loading";
-
+import { appLogout } from "../redux/auth/auth.slice";
 
 function Navbar({ setOpenLoginSignup, setLoadLogin }: any) {
 	const [currLocation, setCurrLocation] = useState("");
@@ -36,6 +35,7 @@ function Navbar({ setOpenLoginSignup, setLoadLogin }: any) {
 				`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
 			)
 			.then((res) => {
+        console.log(res);
 				setCurrLocation(res.data.locality);
 			});
 	}, []);
@@ -125,7 +125,7 @@ function Navbar({ setOpenLoginSignup, setLoadLogin }: any) {
 									setOpenLoginHandler()
 								} else {
                   firebaseAuth.signOut();
-                  dispatch({ type: "LOGOUT" });
+                  dispatch(appLogout());
 									toast({
 										title: "You have been Logged out...",
 										status: "success",

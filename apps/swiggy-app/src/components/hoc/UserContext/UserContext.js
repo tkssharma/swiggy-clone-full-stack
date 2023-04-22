@@ -1,6 +1,7 @@
 import React, { useEffect, useState, createContext } from "react";
 import { firebaseAuth } from "../../../firebase/firebase";
 import { useDispatch } from "react-redux";
+import { loginSuccess } from "../../../redux/auth/auth.slice";
 
 export const UserContext = createContext({ user: null });
 
@@ -11,14 +12,14 @@ const UserProvider = (props) => {
   useEffect(() => {
     const subscription = firebaseAuth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
+        console.log(userAuth);
         const token = await userAuth.getIdToken(true);
         const email = userAuth.email;
         console.log(userAuth);
 
-        dispatch({
-          type: "LOGIN_SUCCESS",
-          payload: { token, email, name: email, username: email },
-        });
+        dispatch(loginSuccess(
+          { token, email, name: userAuth.displayName, username: email }
+        ));
         localStorage.setItem("access_token", token);
         setUser(userAuth);
       }

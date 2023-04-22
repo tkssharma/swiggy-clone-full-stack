@@ -10,14 +10,10 @@ function index({ ischeckout }: any) {
 	const location = useLocation();
 	const isInCheckout = location.pathname.split("/")[1] === "checkout";
 
-	let currentCart = null;
-	if (isAuth) {
-		[currentCart] = cart.filter((elem: any) => elem.username === curUser.username);
-	}
 
 	// console.log(isAuth);
 
-	const cartItems = currentCart ? currentCart.cartItems : [];
+	const cartItems: any = []
 
 	return isAuth ? (
 		cartItems.length > 0 ? (

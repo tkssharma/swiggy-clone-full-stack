@@ -1,4 +1,5 @@
-import * as firebase from "firebase";
+import { initializeApp, FirebaseApp } from "firebase/app";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_PUBLIC_FIREBASE_KEY,
@@ -10,6 +11,8 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_PUBLIC_APPID,
   measurementId: process.env.REACT_APP_PUBLIC_MEASUREMENT_ID,
 };
-console.log(firebaseConfig);
-firebase.default.initializeApp(firebaseConfig);
-export const firebaseAuth = firebase.default.auth();
+const app = initializeApp(firebaseConfig);
+
+const firebaseAuth = getAuth();
+const provider = new GoogleAuthProvider();
+export { firebaseAuth, provider, app };

@@ -14,6 +14,7 @@ import { EventEmitterModule } from "@nestjs/event-emitter";
 import { AuthModule } from "@swiggy/auth";
 import { RestaurantDishController } from "./restaurant/controller/restaurant.dish.controller";
 import { RestaurantDishService } from "./restaurant/services/restaurant.dish.service";
+import { DishController } from "./restaurant/controller/dish.controller";
 
 @Module({
   imports: [
@@ -31,8 +32,7 @@ import { RestaurantDishService } from "./restaurant/services/restaurant.dish.ser
     AppLoggerModule,
     ConfigModule,
   ],
-
-  controllers: [RestaurantController, RestaurantDishController],
+  controllers: [RestaurantController, RestaurantDishController, DishController],
   providers: [RestaurantService, RestaurantDishService],
 })
-export class DomainModule {}
+export class DomainModule { }

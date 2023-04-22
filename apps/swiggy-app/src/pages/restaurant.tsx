@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import DishCategoryWise from "../components/restaurant-list/dish-category-wise";
 import Skeleton from "react-loading-skeleton";
@@ -9,74 +9,39 @@ import DishSearchComponent from "../components/restaurant-list/dish-search-compo
 import Footer from "../components/footer";
 import Navbar from "../components/navbar";
 import TopLoading from "../components/top-loading";
+import { fetchRestaurantDishes, selectedRestaurants } from "../redux/restaurant/restaurant.slice";
 
 const Restaurant = ({ setOpenLoginSignup, setLoadLogin }: any) => {
+
+  const dispatch = useDispatch()
 	const { id } = useParams();
-	let data = useSelector((state: any) => state.restaurant.restaurant);
-	let dishesData = useSelector((state: any) => state.restaurant.dishes);
+	const {status, data} = useSelector(selectedRestaurants);
+  console.log(data, status);
+	let dishesData = data?.dishes
 	const [selectedMenu, setSelectedMenu] = useState(0);
 	const [dishSearch, setDishSearch] = useState("");
 	const [onlyDishesId, setOnlyDishesId] = useState([]);
 	const [searchResults, setSearchResults] = useState([]);
 	const [vegOnly, setVegOnly] = useState(false);
-	const dishes = dishesData?.filter((dish: any) => {
-		return dish.restaurant.includes(id);
-	});
+
+	const dishes = dishesData;
+
+  useEffect(() => {
+      const filtered = dishesData && dishesData.filter((i: any) => (i.name.includes(dishSearch)));
+      setSearchResults(filtered || [])
+  }, [dishSearch])
 
 	function handleDishSearch(e: any) {
 		setDishSearch(e.target.value);
 	}
 
-	useEffect(() => {
-		let toMatch = new RegExp(dishSearch, "i");
-		if (dishSearch.length > 0) setSelectedMenu(-1);
-		else setSelectedMenu(0);
+  useEffect(() => {
+    dispatch(fetchRestaurantDishes(id!))
+  }, [id])
 
-		const search = dishesData.filter(
-			//(dish: any) => onlyDishesId.includes(dish) && dish.name.match(toMatch)
-      () => true
-		);
-		setSearchResults(search);
-	}, [dishSearch]);
 
-	useEffect(() => {
-		if (dishSearch.length < 1 && !loading) {
-			document!.getElementById(`dishId${selectedMenu}`)?.scrollIntoView({
-				behavior: "smooth",
-				block: "end",
-				inline: "nearest",
-			});
-		}
-	}, [selectedMenu]);
 
-	const [loading, setLoading] = useState(true);
-
-	useEffect(() => {
-		!loading && window.scrollTo(0, 0);
-		setTimeout(() => {
-			setLoading(false);
-		}, 2500);
-		const onlyDishes: any = [];
-		data.menu.forEach((menuItem: any) => {
-			onlyDishes.push(...menuItem.foodItems);
-		});
-		setOnlyDishesId(onlyDishes);
-	}, []);
-
-	return loading ? (
-		<div className='h-screen w-screen grid place-items-center bg-[#fbfbfb]'>
-			<span>Loading...</span>
-		</div>
-	) : !data.id ? (
-		<>
-			<Navbar
-				setOpenLoginSignup={setOpenLoginSignup}
-				setLoadLogin={setLoadLogin}
-			/>
-			<h1>Loading</h1>
-			<Footer />
-		</>
-	) : (
+	return status === 'idle' ?  (
 		<>
 			<Navbar
 				setOpenLoginSignup={setOpenLoginSignup}
@@ -131,13 +96,13 @@ const Restaurant = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 						<div className='flex h-full py-12 md:py-0 flex-col md:flex-row gap-8 items-center md:items-end'>
 							<img
 								className='h-full w-60'
-								src={data.image}
+								src={ data.thumbnails && data.thumbnails[0]}
 								alt='name'
 							/>
 							<div className='w-[80%] md:w-full'>
 								<h1 className='text-4xl leading-10'>{data.name}</h1>
 								<h1 className='text-sm text-gray-300 mb-4 font-semibold'>
-									{data?.discription}
+									{data?.description}
 								</h1>
 								<h1 className=' text-gray-200 first-letter:capitalize mb-4 font-semibold'>
 									{data.city}
@@ -156,24 +121,20 @@ const Restaurant = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 													clipRule='evenodd'
 												/>
 											</svg>
-											{data.rating}
+											{data.ratings}
 										</span>
 										<p className='text-xs text-gray-300'>20+ Ratings</p>
 									</div>
 									<div className='px-8  border-r flex flex-col justify-end'>
 										<span className=''>
-											{data.deliverTime > 59
-												? `${Math.floor(data.deliverTime / 60)} hour ${
-														data.deliverTime % 60
-												  }`
-												: data.deliverTime}{" "}
+											{data.delivery_time}
 											mins{" "}
 										</span>
 										<p className='text-xs text-gray-300'>Delivery Time</p>
 									</div>
 									<div className='px-8'>
-										<span className=''>{data.cheapestPrice * 2} ₹ </span>
-										<p className='text-xs text-gray-300'>Cost for Two</p>
+										<span className=''>{data.price} ₹ </span>
+										<p className='text-xs text-gray-300'>price</p>
 									</div>
 								</div>
 							</div>
@@ -222,12 +183,11 @@ const Restaurant = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 										? "text-[tomato] font-bold border-[tomato]"
 										: ""
 								}`}
-								// onClick={}
 							>
 								Search
 							</p>
 						)}
-						{data.menu?.map((menuItem: any, idx: number) => (
+						{data?.dishes?.map((menuItem: any, idx: number) => (
 							<p
 								className={`text-sm pr-8 border-r-4 cursor-pointer border-transparent mb-2 ${
 									selectedMenu === idx
@@ -246,7 +206,7 @@ const Restaurant = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 							<div
 								className={` ${styles.dishListContainer} h-[calc(100vh-10rem)] overflow-y-scroll`}>
 								{dishSearch.length > 0
-									? searchResults.map((dish: any) => (
+									? searchResults && searchResults.map((dish: any) => (
 											<div className='flex flex-col px-8 py-4'>
 												<DishSearchComponent
 													key={dish.id}
@@ -257,14 +217,14 @@ const Restaurant = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 												/>
 											</div>
 									  ))
-									: data.menu?.map((dishObj: any, idx: number) => (
+									: data?.dishes?.map((dishObj: any, idx: number) => (
 											<DishCategoryWise
 												key={idx}
 												id={idx}
 												restaurantId={id}
 												vegOnly={vegOnly}
 												category={dishObj.category}
-												foodItems={dishObj.foodItems}
+												dishes={data.dishes}
 											/>
 									  ))}
 							</div>
@@ -296,7 +256,7 @@ const Restaurant = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 			</div>
 			<Footer />
 		</>
-	);
+	): <span></span>
 };
 
 export default Restaurant;

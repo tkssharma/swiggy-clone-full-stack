@@ -4,18 +4,19 @@ import React, { useEffect, useReducer, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
-import { addDishes } from "../../redux/restaurant/restaurant-action";
 import RestaurantCard from "../restaurant-card/card";
 import useLazyLoad from "../../hooks/useLazyLoad";
 import Skeleton from "react-loading-skeleton";
+import { fetchDishes, topDishes } from "../../redux/dishes/dish.slice";
 
 const NUM_PER_PAGE = 8;
 const TOTAL_PAGES = 13;
 
 const index = () => {
 	const triggerRef = useRef(null);
+  const {data: restaurants, state} = useSelector(topDishes);
 
-	const filtersReducer = (state, { type }) => {
+	const filtersReducer = (state: any, { type }: any) => {
 		switch (type) {
 			case "deliverTime":
 				return "_sort=deliverTime&_order=asc";
@@ -36,41 +37,14 @@ const index = () => {
 
 	const storeDispatch = useDispatch();
 
-	useEffect(() => {
-		(async () => {
-			const { data: dishes } = await axios.get(`http://localhost:8080/dishes`);
-			storeDispatch(addDishes(dishes));
-		})();
-	}, []);
-
 	const [filters, dispatch] = useReducer(filtersReducer, "");
 
-	const { data, loading, error, reFetch } = useFetch(
-		`http://localhost:8080/restaurants?${filters}`
-	);
-
 	useEffect(() => {
-		onGrabData(1);
+		storeDispatch(fetchDishes());
 	}, [filters]);
 
-	const onGrabData = (currentPage) => {
-		return new Promise((resolve) => {
-			setTimeout(() => {
-				const data2 = data.slice(
-					((currentPage - 1) % TOTAL_PAGES) * NUM_PER_PAGE,
-					NUM_PER_PAGE * (currentPage % TOTAL_PAGES)
-				);
-				resolve(data2);
-			}, 1000);
-		});
-	};
 
-	const { data: restaurants, loadingOfPosts } = useLazyLoad({
-		triggerRef,
-		onGrabData,
-	});
-
-	const handleFilterChange = (filter) => {
+	const handleFilterChange = (filter: any) => {
 		dispatch({ type: filter });
 	};
 
@@ -79,7 +53,7 @@ const index = () => {
 			<div className='flex flex-col max-w-[1200px] mx-auto justify-center bg-white px-2 md:px-0'>
 				<header className=' h-16 w-full  border-b flex items-end  justify-between'>
 					<p className='font-bold tracking-wider text-2xl'>
-						{data.length} Restaurants
+						{restaurants.length} Restaurants
 					</p>
 					<ul className='flex gap-4 md:gap-2 text-sm text-gray-500  md:w-1/2 h-full  justify-between'>
 						<li
@@ -128,7 +102,7 @@ const index = () => {
 						<li
 							onClick={(e) => handleFilterChange("")}
 							className={`${
-								filters === "filter" ? "font-bold border-b-2" : ""
+								filters === "" ? "font-bold border-b-2" : ""
 							} cursor-pointer border-b-lack-transparent hover:border-black h-full hidden lg:flex pb-2 items-end`}>
 							Filters{" "}
 						</li>
@@ -137,56 +111,48 @@ const index = () => {
 
 				{/* Restaurants to be rendered over here */}
 
-				{loading ? (
-					<h1>Loading</h1>
-				) : (
 					<div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 w-full mt-4 gap-8'>
-						{" "}
-						{!filters
-							? restaurants.map((restaurant) => (
+						{
+						restaurants.map((restaurant: any) => (
 									<RestaurantCard
 										restaurantDetails={restaurant}
-										key={restaurant._id}
+										key={restaurant.id}
 									/>
 							  ))
-							: data.map((restaurant) => (
-									<RestaurantCard
-										restaurantDetails={restaurant}
-										key={restaurant._id}
-									/>
-							  ))}{" "}
+            }
 					</div>
-				)}
+          {state === 'pending' && (
 				<div
-					ref={triggerRef}
-					style={{ maxWidth: "1000px", padding: "50px", margin: "0 auto" }}
-					className={clsx("trigger", { visible: loadingOfPosts })}>
-					<div className='flex gap-10 sm:max-w-[500px] lg:max-w-[900px] md:max-w-[600px]  p-0 sm:p-8 justify-center '>
-						<Skeleton
-							className=''
-							height={200}
-							width={250}
-						/>
-						<div className='hidden sm:block'>
-							<Skeleton
-								height={200}
-								width={250}
-							/>
-						</div>
-						<div className='hidden lg:block'>
-							<Skeleton
-								height={200}
-								width={250}
-							/>
-						</div>
-						<div className='hidden md:block'>
-							<Skeleton
-								height={200}
-								width={250}
-							/>
-						</div>
-					</div>
-				</div>
+        style={{ maxWidth: "1000px", padding: "50px", margin: "0 auto" }}
+        className="trigger">
+        <div className='flex gap-10 sm:max-w-[500px] lg:max-w-[900px] md:max-w-[600px]  p-0 sm:p-8 justify-center '>
+          <Skeleton
+            className=''
+            height={200}
+            width={250}
+          />
+          <div className='hidden sm:block'>
+            <Skeleton
+              height={200}
+              width={250}
+            />
+          </div>
+          <div className='hidden lg:block'>
+            <Skeleton
+              height={200}
+              width={250}
+            />
+          </div>
+          <div className='hidden md:block'>
+            <Skeleton
+              height={200}
+              width={250}
+            />
+          </div>
+        </div>
+      </div>
+          )}
+
 			</div>
 		</>
 	);

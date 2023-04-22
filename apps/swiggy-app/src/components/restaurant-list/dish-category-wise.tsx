@@ -2,61 +2,22 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeFromCart } from "../../redux/cart/cart-action";
 import axios from "axios";
+import { authSelector } from "../../redux/auth/auth.slice";
 
-function DishCategoryWise({ category, foodItems, restaurantId, id, vegOnly }) {
-	const dishes = useSelector((state) => state.restaurant.dishes);
-	const cartItems = useSelector((state) => state.cart);
-	const isAuth = useSelector((state) => state.auth.auth.isAuth);
-	const currentUser = useSelector((state) => state.auth.currentUser);
+function DishCategoryWise({ category, dishes, restaurantId, id, vegOnly }: any) {
+	const cartItems = []
+	const auth = useSelector(authSelector);
+  const isAuth = auth.auth.isAuth;
+	const currentUser = auth.currentUser
 
 	const [currentUserCartDishes, setCurrentUserCartDishes] = useState([]);
 
-	// console.log("isAuth", isAuth);
-
-	useEffect(() => {
-		if (isAuth && cartItems.length > 0) {
-			const [currentUserCart] = cartItems.filter(
-				(elem) => elem.username === currentUser.username
-			);
-			if (currentUserCart) {
-				setCurrentUserCartDishes(currentUserCart.cartItems);
-			}
-
-			(async () => {
-				const res = await axios.post(
-					"http://localhost:8080/cart",
-					currentUserCart,
-					{
-						withCredentials: true,
-					}
-				);
-			})();
-		}
-	}, [cartItems]);
-
 	const dispatch = useDispatch();
 
-	async function handleAddToCart(dishId, price) {
-		// Add cart payload will have {username,dishId,restaurantId,price}
-		const payload = {
-			username: currentUser.username,
-			dishId,
-			restaurantId,
-			price,
-		};
-
-		dispatch(addToCart(payload));
+	async function handleAddToCart(dishId: string, price: number) {
 	}
 
-	async function handleRemoveFromCart(dishId) {
-		// Add cart payload will have {username,dishId,restaurantId,price}
-		const payload = {
-			username: currentUser.username,
-			dishId,
-			restaurantId,
-		};
-
-		dispatch(removeFromCart(payload));
+	async function handleRemoveFromCart(dishId: string) {
 	}
 
 	return (
@@ -66,12 +27,12 @@ function DishCategoryWise({ category, foodItems, restaurantId, id, vegOnly }) {
 			<h1 className='text-lg leading-5 font-bold first-letter:capitalize'>
 				{category}
 			</h1>
-			<p className='text-sm mb-4'>{foodItems.length} items </p>
+			<p className='text-sm mb-4'>{dishes.length} items </p>
 			{dishes.length > 0 &&
-				foodItems.map((foodId, idx) => {
-					const [food] = dishes.filter((el) => el._id === foodId);
+				dishes.map((foodId: string, idx: number) => {
+					const [food] = dishes.filter((el: any) => el.category === category);
 					return vegOnly ? (
-						food.veg && (
+						food.food_type && (
 							<div
 								key={idx}
 								className='py-4 border-b flex justify-between items-end'>
@@ -99,7 +60,7 @@ function DishCategoryWise({ category, foodItems, restaurantId, id, vegOnly }) {
 									<div className=''>
 										<img
 											className='h-[80px] w-[120px] rounded-md'
-											src={food.image}
+											src={food.thumbnails && food.thumbnails[0]}
 											alt={food.name}
 										/>
 									</div>
@@ -112,14 +73,7 @@ function DishCategoryWise({ category, foodItems, restaurantId, id, vegOnly }) {
 												{"-"}{" "}
 											</button>
 
-											{/* //TODO */}
-											<p>
-												{currentUserCartDishes.filter(
-													(elem) =>
-														elem.dishId === foodId &&
-														elem.restaurantId === restaurantId
-												)[0]?.quantity || 0}
-											</p>
+				
 
 											<button
 												onClick={(e) => handleAddToCart(foodId, food.price)}
@@ -160,7 +114,7 @@ function DishCategoryWise({ category, foodItems, restaurantId, id, vegOnly }) {
 								<div className='h-20 w-30'>
 									<img
 										className='h-[80px] w-[120px] rounded-md'
-										src={food.image}
+										src={food.thumbnails[0]}
 										alt={food.name}
 									/>
 								</div>
@@ -173,13 +127,7 @@ function DishCategoryWise({ category, foodItems, restaurantId, id, vegOnly }) {
 											{"-"}{" "}
 										</button>
 
-										<p>
-											{currentUserCartDishes.filter(
-												(elem) =>
-													elem.dishId === foodId &&
-													elem.restaurantId === restaurantId
-											)[0]?.quantity || 0}
-										</p>
+							
 
 										<button
 											onClick={(e) => handleAddToCart(foodId, food.price)}

@@ -1,18 +1,27 @@
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Footer from "../components/footer";
 import Navbar from "../components/navbar";
-import RestaurantList from "../components/restaurant-list";
-import { addDishes } from "../redux/restaurant/restaurant-action";
+import RestaurantList from "../components/restaurant-list/restaurants";
+import DishList from "../components/restaurant-list/dishes";
+
+import { fetchRestaurants, topRestaurants } from "../redux/restaurant/restaurant.slice";
+import { fetchDishes } from "../redux/dishes/dish.slice";
 
 const HomePage = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 	const [carousel, setCarousel] = useState(0);
 	const firstRender = useRef(0);
 	const [loading, setLoading] = useState(true);
 
-	const storeDispatch = useDispatch();
+	const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchRestaurants())
+    dispatch(fetchDishes())
+  },[dispatch])
+
 
 	useEffect(() => {
 		if (firstRender.current < 1) {
@@ -22,14 +31,7 @@ const HomePage = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 		}
 	}, []);
 
-	useEffect(() => {
-		(async () => {
-			const { data: dishes } = await axios.get(`http://localhost:8080/dishes`, {
-				withCredentials: true,
-			});
-			storeDispatch(addDishes(dishes));
-		})();
-	}, []);
+
 
 	return loading ? (
 		<div className='h-screen w-screen grid place-items-center bg-[#fbfbfb]'>
@@ -136,6 +138,7 @@ const HomePage = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 
 				{/* Restaurants List */}
 				<RestaurantList />
+        <DishList />
 			</div>
 		</>
 	);

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
 	Box,
 	Drawer,
@@ -13,20 +13,14 @@ import {
 	Input,
 	useToast,
 } from "@chakra-ui/react";
-import { firebaseAuth } from "../../firebase/firebase";
+import { signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { firebaseAuth, provider } from "../../firebase/firebase";
 import { useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-	LOGIN_FAILED,
-	LOGIN_SUCCESS,
-	REGISTER_REQUEST,
-	REGISTER_SUCCESS,
-	REGISTER_FAILED,
-} from "../../redux/auth/auth-action";
+
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { addToCart, updateCart } from "../../redux/cart/cart-action";
+import { registerSuccess } from "../../redux/auth/auth.slice";
 function LoginSignup({ open, loadlogin }: any) {
 	const [switchLogin, setSwitchLogin] = useState(loadlogin);
 	const [loginState, setLoginState] = useState({
@@ -69,14 +63,23 @@ function LoginSignup({ open, loadlogin }: any) {
 			});
 		} 
     const {email, password} = loginState
-    firebaseAuth
-    .signInWithEmailAndPassword(email, password)
+    signInWithEmailAndPassword(firebaseAuth, email, password)
     .then(() => {
     })
     .catch((error: any) => {
       console.error("Error signing in with password and email", error);
     });
 	}
+
+  async function handleGoogleSignup(){
+    await signInWithPopup(firebaseAuth, provider)
+    .then((result) => {
+      console.log(result)
+    }).catch((error) => {
+      console.log(error);
+    });
+  }   
+
 
 	async function handleSignup() {
 		if (
@@ -93,14 +96,10 @@ function LoginSignup({ open, loadlogin }: any) {
 			});
 		} else {
 	
-      const {email, password} = registerStatus;
-      firebaseAuth
-      .createUserWithEmailAndPassword(email, password)
+      const {email, password} = signupState;
+      createUserWithEmailAndPassword(firebaseAuth, email, password)
       .then(() => {
-        dispatch({
-					type: REGISTER_SUCCESS,
-					payload: { registerStatus: 200 },
-				});
+        dispatch(registerSuccess);
       })
       .catch((error: any) => {
         console.error("Error signing in with password and email", error);
@@ -233,10 +232,11 @@ function LoginSignup({ open, loadlogin }: any) {
 											}></Image>
 									</Box>
 								</Box>
-								<Box w={"72%"}>
+								<Box w={"80%"}>
 									<Input
 										placeholder={"User Email"}
 										padding={"34px"}
+                    margin={"10px"}
 										borderRadius={"0px"}
 										w={"100%"}
 										type={"text"}
@@ -253,6 +253,7 @@ function LoginSignup({ open, loadlogin }: any) {
 									<Input
 										placeholder={"User Password"}
 										padding={"34px"}
+                    margin={"10px"}
 										name='password'
 										onChange={(e) =>
 											setLoginState((p) => ({
@@ -271,12 +272,27 @@ function LoginSignup({ open, loadlogin }: any) {
 										colorScheme={"#fc8019"}
 										fontWeight={"bold"}
 										color={"white"}
+                    margin={"10px"}
 										borderRadius={"0px"}
 										onClick={handleLogin}
 										w={"100%"}
 										bg={"#fc8019"}
 										padding={"27px"}>
-										LOGIN
+										Login
+									</Button>
+
+                  <Button
+										colorScheme={"#fc8019"}
+										fontSize={"14px"}
+										fontWeight={"bold"}
+                    margin={"10px"}
+										color={"white"}
+										borderRadius={"0px"}
+										w={"100%"}
+										bg={"#fc8019"}
+										padding={"27px"}
+										onClick={handleGoogleSignup}>
+										Login Using Google
 									</Button>
 									<Text
 										mt={"5px"}
@@ -322,6 +338,8 @@ function LoginSignup({ open, loadlogin }: any) {
 									<Input
 										placeholder={"email"}
 										padding={"34px"}
+                    margin={"10px"}
+
 										borderRadius={"0px"}
 										w={"100%"}
 										name='email'
@@ -340,6 +358,8 @@ function LoginSignup({ open, loadlogin }: any) {
 										placeholder={"username"}
 										padding={"34px"}
 										borderRadius={"0px"}
+                    margin={"10px"}
+
 										w={"100%"}
 										type={"text"}
 										name='username'
@@ -357,6 +377,8 @@ function LoginSignup({ open, loadlogin }: any) {
 										borderRadius={"0px"}
 										w={"100%"}
 										type={"password"}
+                    margin={"10px"}
+
 										name='password'
 										value={signupState.password}
 										onChange={(e) =>
@@ -380,11 +402,25 @@ function LoginSignup({ open, loadlogin }: any) {
 										fontWeight={"bold"}
 										color={"white"}
 										borderRadius={"0px"}
+                    margin={"10px"}
 										w={"100%"}
 										bg={"#fc8019"}
 										padding={"27px"}
 										onClick={handleSignup}>
-										CONTINUE
+										Signup
+									</Button>
+                  <Button
+										colorScheme={"#fc8019"}
+										fontSize={"14px"}
+										fontWeight={"bold"}
+                    margin={"10px"}
+										color={"white"}
+										borderRadius={"0px"}
+										w={"100%"}
+										bg={"#fc8019"}
+										padding={"27px"}
+										onClick={handleGoogleSignup}>
+										Login Using Google
 									</Button>
 									<Text
 										mt={"5px"}
