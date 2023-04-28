@@ -13,6 +13,6 @@ async function bootstrap() {
     next();
   });
   createDocument(app);
-  await app.listen(3000 || process.env.PORT);
+  await app.listen(3004 || process.env.PORT);
 }
 bootstrap();

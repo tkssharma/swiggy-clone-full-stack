@@ -256,7 +256,10 @@ const Restaurant = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 			</div>
 			<Footer />
 		</>
-	): <span></span>
+	):
+  <div className='h-screen w-screen grid place-items-center bg-[#fbfbfb]'>
+  <span>loading..</span>
+</div>
 };
 
 export default Restaurant;

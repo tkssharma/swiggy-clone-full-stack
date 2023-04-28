@@ -12,6 +12,8 @@ import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import Footer from "../components/footer";
 import Navbar from "../components/navbar";
+import { useDispatch, useSelector } from "react-redux";
+import { filterRestaurants, filteredRestaurants } from "../redux/restaurant/restaurant.slice";
 
 const filtersApplied: any = {};
 const Search = ({ setOpenLoginSignup, setLoadLogin }: any) => {
@@ -22,6 +24,8 @@ const Search = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 	const debounceRef: any = useRef(null);
 	const [sort, setSort] = useState("");
 	const [isSortBox, setIsSortBox] = useState(false);
+  const dispatch = useDispatch();
+  const {data, status} = useSelector(filteredRestaurants);
 
 	function handleVoiceSearch() {
 	}
@@ -51,23 +55,10 @@ const Search = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 	}, []);
 
 	useEffect(() => {
-		let q = "";
-
-		for (const key in filters) {
-			q += `${key}=${filters[key]}&`;
-		}
-
 		if (debounceRef.current) clearTimeout(debounceRef.current);
-
 		debounceRef.current = setTimeout(() => {
 			(async () => {
-				const { data } = await axios.get(
-					`http://localhost:8080/dishes?${q}${sort}`
-				);
-				setDishesData(data);
-				let toMatch = new RegExp(dishSearch, "i");
-				const search = data.filter((dish: any) => dish.name.match(toMatch));
-				setSearchResults(search);
+				dispatch(filterRestaurants(dishSearch))
 			})();
 		}, 700);
 	}, [dishSearch, filters, sort]);
@@ -243,11 +234,11 @@ const Search = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 					<br />
 					<div className='w-full max-w-[950px] mx-auto '>
 						{dishSearch.length > 0 && (
-							<div className='grid grid-cols-1 md:grid-cols-2  bg-slate-100 '>
-								{searchResults.map((dish: any) => (
+							<div className='grid grid-cols-3 md:grid-cols-3 '>
+								{data.map((dish: any) => (
 									<Display
 										key={dish.id}
-										dish={dish}
+										restaurant={dish}
 									/>
 								))}
 							</div>

@@ -49,7 +49,11 @@ import {
   User,
   UserMetaData,
 } from "@swiggy/auth";
-import { CreateRestaurantDishBodyDto, UpdateRestaurantDishBodyDto, getRestaurantDishByIdDto } from "../dto/restaurant.dish.dto";
+import {
+  CreateRestaurantDishBodyDto,
+  UpdateRestaurantDishBodyDto,
+  getRestaurantDishByIdDto,
+} from "../dto/restaurant.dish.dto";
 import { RestaurantDishService } from "../services/restaurant.dish.service";
 
 @ApiBearerAuth("authorization")
@@ -65,7 +69,7 @@ export class RestaurantDishController {
   constructor(
     private readonly service: RestaurantDishService,
     private readonly logger: Logger
-  ) { }
+  ) {}
 
   @HttpCode(HttpStatus.CREATED)
   @ApiConsumes("application/json")

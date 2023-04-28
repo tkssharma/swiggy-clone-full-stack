@@ -3,35 +3,26 @@ import { TerminusModule } from "@nestjs/terminus";
 import { ConfigModule } from "@swiggy/config";
 import { AppLoggerModule } from "@swiggy/logger";
 import { DBModule } from "@swiggy/database";
-import { RestaurantAddressEntity } from "./restaurant/entity/restaurant.address.entity";
-import { RestaurantDishEntity } from "./restaurant/entity/restaurant.dish.entity";
-import { RestaurantEntity } from "./restaurant/entity/restaurant.entity";
-import { RestaurantController } from "./restaurant/controller/restaurant.controller";
-import { RestaurantService } from "./restaurant/services/restaurant.service";
+
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { EventEmitterModule } from "@nestjs/event-emitter";
 import { AuthModule } from "@swiggy/auth";
-import { RestaurantDishController } from "./restaurant/controller/restaurant.dish.controller";
-import { RestaurantDishService } from "./restaurant/services/restaurant.dish.service";
-import { DishController } from "./restaurant/controller/dish.controller";
-
+import { UserAddressEntity } from "./address/entity/user.address.entity";
+import { UserAddressController } from "./address/controller/user.address.controller";
+import { UserAddressService } from "./address/services/user.address.service";
 @Module({
   imports: [
     AuthModule,
     EventEmitterModule.forRoot(),
-    TypeOrmModule.forFeature([RestaurantEntity, RestaurantDishEntity]),
+    TypeOrmModule.forFeature([UserAddressEntity]),
     DBModule.forRoot({
-      entities: [
-        RestaurantAddressEntity,
-        RestaurantEntity,
-        RestaurantDishEntity,
-      ],
+      entities: [UserAddressEntity],
     }),
     TerminusModule,
     AppLoggerModule,
     ConfigModule,
   ],
-  controllers: [RestaurantController, RestaurantDishController, DishController],
-  providers: [RestaurantService, RestaurantDishService],
+  controllers: [UserAddressController],
+  providers: [UserAddressService],
 })
-export class DomainModule { }
+export class DomainModule {}

@@ -10,22 +10,27 @@ export interface ApiData {
 
 interface RestaurantsState {
   restaurants: ApiData;
-  selectedRestaurant: ApiData
+  selectedRestaurant: ApiData;
+  filteredRestaurant: ApiData;
 }
 
 export const fetchRestaurantDishes = createAsyncThunk(
   "fetch/restaurantsDishes",
   async (id: string) => {
-    return ExternalApis.fetchRestaurantsDishes(id)
+    return ExternalApis.fetchRestaurantsDishes(id);
   }
 );
 
-export const fetchRestaurants = createAsyncThunk(
-  "fetch/restaurants",
-  async () => {
-    return ExternalApis.fetchRestaurants()
+export const filterRestaurants = createAsyncThunk(
+  "fetch/filteredRestaurants",
+  async (search_term: string) => {
+    return ExternalApis.filterRestaurants(search_term);
   }
 );
+
+export const fetchRestaurants = createAsyncThunk("fetch/restaurants", async () => {
+  return ExternalApis.fetchRestaurants();
+});
 
 const initialState = {
   restaurants: {
@@ -37,7 +42,12 @@ const initialState = {
     status: "idle",
     data: {},
     error: null,
-  }
+  },
+  filteredRestaurant: {
+    status: "idle",
+    data: [],
+    error: null,
+  },
 } as RestaurantsState;
 
 export const RestaurantSlice = createSlice({
@@ -45,71 +55,75 @@ export const RestaurantSlice = createSlice({
   initialState: initialState,
   reducers: {},
   extraReducers: {
-    [fetchRestaurants.pending.type]: (
-      state: RestaurantsState,
-      action: any
-    ) => {
+    [fetchRestaurants.pending.type]: (state: RestaurantsState, action: any) => {
       state.restaurants = {
         status: "pending",
         data: [],
         error: null,
       };
     },
-    [fetchRestaurants.fulfilled.type]: (
-      state: RestaurantsState,
-      action: any
-    ) => {
+    [fetchRestaurants.fulfilled.type]: (state: RestaurantsState, action: any) => {
       state.restaurants = {
         status: "idle",
         data: action.payload,
         error: null,
       };
     },
-    [fetchRestaurants.rejected.type]: (
-      state: RestaurantsState,
-      action: any
-    ) => {
+    [fetchRestaurants.rejected.type]: (state: RestaurantsState, action: any) => {
       state.restaurants = {
         status: "idle",
         data: [],
         error: action.payload,
       };
     },
-    [fetchRestaurantDishes.pending.type]: (
-      state: RestaurantsState,
-      action: any
-    ) => {
+    [fetchRestaurantDishes.pending.type]: (state: RestaurantsState, action: any) => {
       state.selectedRestaurant = {
         status: "pending",
         data: {},
         error: null,
       };
     },
-    [fetchRestaurantDishes.fulfilled.type]: (
-      state: RestaurantsState,
-      action: any
-    ) => {
+    [fetchRestaurantDishes.fulfilled.type]: (state: RestaurantsState, action: any) => {
       state.selectedRestaurant = {
         status: "idle",
         data: action.payload,
         error: null,
       };
     },
-    [fetchRestaurantDishes.rejected.type]: (
-      state: RestaurantsState,
-      action: any
-    ) => {
+    [fetchRestaurantDishes.rejected.type]: (state: RestaurantsState, action: any) => {
       state.selectedRestaurant = {
         status: "idle",
         data: {},
+        error: action.payload,
+      };
+    },
+    [filterRestaurants.pending.type]: (state: RestaurantsState, action: any) => {
+      state.filteredRestaurant = {
+        status: "pending",
+        data: [],
+        error: null,
+      };
+    },
+    [filterRestaurants.fulfilled.type]: (state: RestaurantsState, action: any) => {
+      state.filteredRestaurant = {
+        status: "idle",
+        data: action.payload,
+        error: null,
+      };
+    },
+    [filterRestaurants.rejected.type]: (state: RestaurantsState, action: any) => {
+      state.filteredRestaurant = {
+        status: "idle",
+        data: [],
         error: action.payload,
       };
     },
   },
 });
 
-export const topRestaurants = (state: any) =>
-  state.restaurants.restaurants;
-export const selectedRestaurants = (state: any) =>
-  state.restaurants.selectedRestaurant;
+filterRestaurants;
+export const topRestaurants = (state: any) => state.restaurants.restaurants;
+export const selectedRestaurants = (state: any) => state.restaurants.selectedRestaurant;
+export const filteredRestaurants = (state: any) => state.restaurants.filteredRestaurant;
+
 export default RestaurantSlice.reducer;

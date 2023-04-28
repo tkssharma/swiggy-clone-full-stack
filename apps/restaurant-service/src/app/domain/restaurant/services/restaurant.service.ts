@@ -2,7 +2,14 @@ import { ConflictException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ConfigService } from "@swiggy/config";
 import { Logger } from "@swiggy/logger";
-import { Like, Repository, Connection, QueryRunner, NotBrackets, Brackets } from "typeorm";
+import {
+  Like,
+  Repository,
+  Connection,
+  QueryRunner,
+  NotBrackets,
+  Brackets,
+} from "typeorm";
 
 import { NotFoundException } from "@nestjs/common";
 import { RestaurantEntity } from "../entity/restaurant.entity";
@@ -26,8 +33,7 @@ export class RestaurantService {
     private readonly connection: Connection,
     private configService: ConfigService,
     private eventEmitter: EventEmitter2
-  ) { }
-
+  ) {}
 
   async getRestaurantById(param: getRestaurantByIdDto) {
     const { id } = param;
@@ -48,22 +54,27 @@ export class RestaurantService {
   async search(queryParam: SearchQueryDto) {
     const { search_text, limit, page } = queryParam;
     const offset = limit * (page - 1);
-    const query =
-      this.connection.getRepository(RestaurantEntity)
-        .createQueryBuilder('restaurant')
-        .leftJoinAndSelect("restaurant.dishes", "dishes");
+    const query = this.connection
+      .getRepository(RestaurantEntity)
+      .createQueryBuilder("restaurant")
+      .leftJoinAndSelect("restaurant.dishes", "dishes");
 
     if (search_text) {
       query.andWhere(
         new Brackets((qb) => {
           qb.where("dishes.name like :name", { name: `%${search_text}%` })
             .orWhere("dishes.description like :q", { q: `%${search_text}%` })
-            .orWhere("restaurant.description like :description", { description: `%${search_text}%` })
-            .orWhere("restaurant.name like :name", { name: `%${search_text}%` })
-        }),
-      )
+            .orWhere("restaurant.description like :description", {
+              description: `%${search_text}%`,
+            })
+            .orWhere("restaurant.name like :name", {
+              name: `%${search_text}%`,
+            });
+        })
+      );
     }
-    return await query.skip(offset || 0)
+    return await query
+      .skip(offset || 0)
       .take(limit || 10)
       .getMany();
   }

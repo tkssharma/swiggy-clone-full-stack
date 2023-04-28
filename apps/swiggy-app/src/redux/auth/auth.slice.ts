@@ -8,10 +8,10 @@ export interface User {
 }
 
 export interface InitialState {
-  auth: any,
-  register: any,
-  currentUser: User | null,
-  token: string | null
+  auth: any;
+  register: any;
+  currentUser: User | null;
+  token: string | null;
 }
 
 const INITIAL_STATE: InitialState = {
@@ -25,7 +25,7 @@ const INITIAL_STATE: InitialState = {
     registerError: false,
   },
   currentUser: null,
-  token: null
+  token: null,
 };
 
 export const AuthSlice = createSlice({
@@ -84,9 +84,16 @@ export const AuthSlice = createSlice({
         },
       };
     },
-  }
-})
+  },
+});
 
-export const { loginFailed, loginSuccess, appLogout, registerFailed, registerSuccess, registerRequest } = AuthSlice.actions;
+export const {
+  loginFailed,
+  loginSuccess,
+  appLogout,
+  registerFailed,
+  registerSuccess,
+  registerRequest,
+} = AuthSlice.actions;
 export const authSelector = (state: any) => state;
 export default AuthSlice.reducer;

@@ -52,12 +52,12 @@ export enum foodType {
 export enum filterType {
   "price" = "price",
   "rating" = "rating",
-  "delivery_time" = "delivery_time"
+  "delivery_time" = "delivery_time",
 }
 
 export enum OrderBy {
   "ASC" = "ASC",
-  "DESC" = "DESC"
+  "DESC" = "DESC",
 }
 
 export class UpdateDishItemParamDto extends RestaurantParamParamDto {
@@ -69,7 +69,6 @@ export class UpdateDishItemParamDto extends RestaurantParamParamDto {
   @IsUUID()
   public dish_id!: string;
 }
-
 
 export class getRestaurantDishByIdDto extends getRestaurantByIdDto {
   @ApiProperty({
@@ -111,7 +110,8 @@ export class CreateRestaurantDishBodyDto {
 
   @ApiProperty({
     description: "description",
-    example: "Paneer tikka is a North Indian appetizer where chunks of paneer are marinated in spiced yogurt and grilled in a Tandoor, a traditional clay oven",
+    example:
+      "Paneer tikka is a North Indian appetizer where chunks of paneer are marinated in spiced yogurt and grilled in a Tandoor, a traditional clay oven",
     required: true,
   })
   @IsOptional()
@@ -163,7 +163,9 @@ export class CreateRestaurantDishBodyDto {
 
   @ApiProperty({
     description: "thumbnails",
-    example: ["https://banner2.cleanpng.com/20180331/hbe/kisspng-mattar-paneer-indian-cuisine-shahi-paneer-palak-pa-indian-food-5abf15054700a6.2720425415224721972908.jpg"],
+    example: [
+      "https://banner2.cleanpng.com/20180331/hbe/kisspng-mattar-paneer-indian-cuisine-shahi-paneer-palak-pa-indian-food-5abf15054700a6.2720425415224721972908.jpg",
+    ],
     required: true,
   })
   @IsOptional()
@@ -173,7 +175,6 @@ export class CreateRestaurantDishBodyDto {
 }
 
 export class SearchDishQueryDto {
-
   @ApiProperty({
     description: "search_text",
     example: "paneer tikka",
@@ -184,7 +185,6 @@ export class SearchDishQueryDto {
   @IsDefined()
   public search_text!: string;
 
-
   @ApiProperty({
     description: "filterType",
     required: false,
@@ -193,7 +193,6 @@ export class SearchDishQueryDto {
   })
   @IsEnum(filterType)
   public filter_type!: string;
-
 
   @ApiProperty({
     description: "OrderBy",
@@ -227,4 +226,4 @@ export class SearchDishQueryDto {
 
 export class UpdateRestaurantDishBodyDto extends PartialType(
   CreateRestaurantDishBodyDto
-) { }
+) {}

@@ -108,7 +108,7 @@ function DishSearchComponent({ dishes, restaurantId, isSearch, vegOnly }: any) {
                   src={food.thumbnails &&food.thumbnails[0]}
                   alt={food.name}
                 />
-                {isAuth && (
+                {true && (
                   <div className='absolute text-xs flex justify-between items-center h-8 w-24 shadow-lg px-2  -bottom-2 left-1/2 -translate-x-1/2  bg-white'>
                     <button
                       onClick={(e) => handleRemoveFromCart(food.id)}

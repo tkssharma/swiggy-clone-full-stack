@@ -61,7 +61,7 @@ export class RestaurantController {
   constructor(
     private readonly service: RestaurantService,
     private readonly logger: Logger
-  ) { }
+  ) {}
 
   @HttpCode(HttpStatus.OK)
   @ApiConsumes("application/json")

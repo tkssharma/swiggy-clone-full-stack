@@ -12,12 +12,9 @@ interface DishState {
   dishes: ApiData;
 }
 
-export const fetchDishes = createAsyncThunk(
-  "fetch/Dishes",
-  async () => {
-    return ExternalApis.fetchDishes();
-  }
-);
+export const fetchDishes = createAsyncThunk("fetch/Dishes", async () => {
+  return ExternalApis.fetchDishes();
+});
 
 const initialState = {
   dishes: {
@@ -32,39 +29,29 @@ export const DishSlice = createSlice({
   initialState: initialState,
   reducers: {},
   extraReducers: {
-    [fetchDishes.pending.type]: (
-      state: DishState,
-      action: any
-    ) => {
+    [fetchDishes.pending.type]: (state: DishState, action: any) => {
       state.dishes = {
         status: "pending",
         data: [],
         error: null,
       };
     },
-    [fetchDishes.fulfilled.type]: (
-      state: DishState,
-      action: any
-    ) => {
+    [fetchDishes.fulfilled.type]: (state: DishState, action: any) => {
       state.dishes = {
         status: "idle",
         data: action.payload,
         error: null,
       };
     },
-    [fetchDishes.rejected.type]: (
-      state: DishState,
-      action: any
-    ) => {
+    [fetchDishes.rejected.type]: (state: DishState, action: any) => {
       state.dishes = {
         status: "idle",
         data: [],
         error: action.payload,
       };
-    }
-  }
+    },
+  },
 });
 
-export const topDishes = (state: any) =>
-  state.dishes.dishes;
+export const topDishes = (state: any) => state.dishes.dishes;
 export default DishSlice.reducer;

@@ -20,7 +20,14 @@ import { RestaurantAddressEntity } from "../entity/restaurant.address.entity";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { UserMetaData } from "@swiggy/auth";
 import { RestaurantDishEntity } from "../entity/restaurant.dish.entity";
-import { CreateRestaurantDishBodyDto, OrderBy, SearchDishQueryDto, UpdateRestaurantDishBodyDto, filterType, getRestaurantDishByIdDto } from "../dto/restaurant.dish.dto";
+import {
+  CreateRestaurantDishBodyDto,
+  OrderBy,
+  SearchDishQueryDto,
+  UpdateRestaurantDishBodyDto,
+  filterType,
+  getRestaurantDishByIdDto,
+} from "../dto/restaurant.dish.dto";
 
 @Injectable()
 export class RestaurantDishService {
@@ -33,31 +40,48 @@ export class RestaurantDishService {
     private restaurantDishRepo: Repository<RestaurantDishEntity>,
     private configService: ConfigService,
     private eventEmitter: EventEmitter2
-  ) { }
+  ) {}
 
-  async listRestaurantDish(params: SearchDishQueryDto): Promise<RestaurantDishEntity[]> {
-
+  async listRestaurantDish(
+    params: SearchDishQueryDto
+  ): Promise<RestaurantDishEntity[]> {
     const { search_text, page, limit, filter_type, order_by } = params;
     const offset = limit * (page - 1);
-    const query = this.connection.getRepository(RestaurantDishEntity)
-      .createQueryBuilder('restaurant_dishes');
+    const query = this.connection
+      .getRepository(RestaurantDishEntity)
+      .createQueryBuilder("restaurant_dishes");
     if (search_text) {
       query.andWhere(
         new Brackets((qb) => {
-          qb.where("restaurant_dishes.name like :name", { name: `%${search_text}%` })
-            .orWhere("restaurant_dishes.description like :description", { description: `%${search_text}%` })
-            .orWhere("restaurant_dishes.ingredients like :q", { q: `%${search_text}%` })
-        }),
-      )
+          qb.where("restaurant_dishes.name like :name", {
+            name: `%${search_text}%`,
+          })
+            .orWhere("restaurant_dishes.description like :description", {
+              description: `%${search_text}%`,
+            })
+            .orWhere("restaurant_dishes.ingredients like :q", {
+              q: `%${search_text}%`,
+            });
+        })
+      );
     }
     if (filter_type === filterType.price) {
-      query.orderBy("restaurant_dishes.price", order_by ? order_by as OrderBy : 'ASC')
+      query.orderBy(
+        "restaurant_dishes.price",
+        order_by ? (order_by as OrderBy) : "ASC"
+      );
     } else if (filter_type === filterType.delivery_time) {
-      query.orderBy("restaurant_dishes.delivery_time", order_by ? order_by as OrderBy : 'ASC')
+      query.orderBy(
+        "restaurant_dishes.delivery_time",
+        order_by ? (order_by as OrderBy) : "ASC"
+      );
     } else if (filter_type === filterType.rating) {
-      query.orderBy("restaurant_dishes.rating", order_by ? order_by as OrderBy : 'ASC')
+      query.orderBy(
+        "restaurant_dishes.rating",
+        order_by ? (order_by as OrderBy) : "ASC"
+      );
     }
-    return await query.skip(offset).limit(limit).getMany()
+    return await query.skip(offset).limit(limit).getMany();
   }
 
   async validateAuthorization(user, param) {
@@ -87,7 +111,6 @@ export class RestaurantDishService {
     });
   }
 
-
   async updateRestaurantDish(
     user: UserMetaData,
     param: getRestaurantDishByIdDto,
@@ -95,13 +118,15 @@ export class RestaurantDishService {
   ) {
     const { dish_id } = param;
     const restaurant = await this.validateAuthorization(user, param);
-    const dish = await this.restaurantDishRepo.findOne({ where: { id: dish_id } });
+    const dish = await this.restaurantDishRepo.findOne({
+      where: { id: dish_id },
+    });
     if (!dish) {
       throw new NotFoundException();
     }
     return await this.restaurantDishRepo.save({
       ...dish,
-      ...payload
+      ...payload,
     });
   }
 
@@ -111,11 +136,12 @@ export class RestaurantDishService {
   ) {
     const { dish_id } = param;
     const restaurant = await this.validateAuthorization(user, param);
-    const dish = await this.restaurantDishRepo.findOne({ where: { id: dish_id } })
+    const dish = await this.restaurantDishRepo.findOne({
+      where: { id: dish_id },
+    });
     if (!dish) {
       throw new NotFoundException();
     }
     await this.restaurantDishRepo.delete({ id: dish.id });
   }
-
 }

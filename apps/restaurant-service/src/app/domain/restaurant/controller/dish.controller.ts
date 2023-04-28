@@ -47,7 +47,10 @@ import {
   User,
   UserMetaData,
 } from "@swiggy/auth";
-import { CreateRestaurantDishBodyDto, SearchDishQueryDto } from "../dto/restaurant.dish.dto";
+import {
+  CreateRestaurantDishBodyDto,
+  SearchDishQueryDto,
+} from "../dto/restaurant.dish.dto";
 import { RestaurantDishService } from "../services/restaurant.dish.service";
 
 @ApiBearerAuth("authorization")
@@ -63,7 +66,7 @@ export class DishController {
   constructor(
     private readonly service: RestaurantDishService,
     private readonly logger: Logger
-  ) { }
+  ) {}
 
   @HttpCode(HttpStatus.OK)
   @ApiConsumes("application/json")
@@ -73,9 +76,7 @@ export class DishController {
   @ApiInternalServerErrorResponse({ description: INTERNAL_SERVER_ERROR })
   // @UseGuards(FirebaseAuthGuard)
   @Get("/")
-  public async listRestaurantDish(
-    @Query() query: SearchDishQueryDto
-  ) {
+  public async listRestaurantDish(@Query() query: SearchDishQueryDto) {
     return await this.service.listRestaurantDish(query);
   }
 }

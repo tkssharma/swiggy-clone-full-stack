@@ -17,9 +17,7 @@ const UserProvider = (props) => {
         const email = userAuth.email;
         console.log(userAuth);
 
-        dispatch(loginSuccess(
-          { token, email, name: userAuth.displayName, username: email }
-        ));
+        dispatch(loginSuccess({ token, email, name: userAuth.displayName, username: email }));
         localStorage.setItem("access_token", token);
         setUser(userAuth);
       }

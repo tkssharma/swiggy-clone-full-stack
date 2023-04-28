@@ -182,7 +182,9 @@ export class CreateRestaurantBodyDto {
 
   @ApiProperty({
     description: "thumbnails",
-    example: ["https://logos-world.net/wp-content/uploads/2021/08/Dominos-Logo.png"],
+    example: [
+      "https://logos-world.net/wp-content/uploads/2021/08/Dominos-Logo.png",
+    ],
     required: true,
   })
   @IsOptional()

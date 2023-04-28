@@ -1,5 +1,5 @@
 {
-  "name": "@swiggy/user",
+  "name": "@swiggy/user-preference",
   "version": "0.0.1",
   "description": "apis for user service to store user metadata",
   "author": "",

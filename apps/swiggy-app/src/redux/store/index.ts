@@ -7,7 +7,7 @@ export default configureStore({
   reducer: {
     restaurants: RestaurantReducer,
     dishes: DishReducer,
-    auth: AuthReducer
+    auth: AuthReducer,
   },
-  devTools: true
-})
+  devTools: true,
+});

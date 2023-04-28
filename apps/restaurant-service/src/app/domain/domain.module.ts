@@ -35,4 +35,4 @@ import { DishController } from "./restaurant/controller/dish.controller";
   controllers: [RestaurantController, RestaurantDishController, DishController],
   providers: [RestaurantService, RestaurantDishService],
 })
-export class DomainModule { }
+export class DomainModule {}
