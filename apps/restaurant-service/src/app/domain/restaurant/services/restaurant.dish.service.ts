@@ -40,17 +40,15 @@ export class RestaurantDishService {
     private restaurantDishRepo: Repository<RestaurantDishEntity>,
     private configService: ConfigService,
     private eventEmitter: EventEmitter2
-  ) { }
+  ) {}
 
-  async listRestaurantDish(
-    params: SearchDishQueryDto
-  ): Promise<any[]> {
+  async listRestaurantDish(params: SearchDishQueryDto): Promise<any[]> {
     const { search_text, page, limit, filter_type, order_by } = params;
     const offset = limit * (page - 1);
     const query = this.connection
       .getRepository(RestaurantDishEntity)
       .createQueryBuilder("restaurant_dishes")
-      .leftJoinAndSelect("restaurant_dishes.restaurant", "restaurants")
+      .leftJoinAndSelect("restaurant_dishes.restaurant", "restaurants");
 
     if (search_text) {
       query.andWhere(

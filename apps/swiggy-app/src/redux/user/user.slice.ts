@@ -13,40 +13,47 @@ interface UserState {
   orders: ApiData;
 }
 
-export const fetchOrders = createAsyncThunk("fetch/fetchOrders", async (_arg: any, { getState }: any,) => {
-  const state = getState();
-  const token = state.auth.token;
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
+export const fetchOrders = createAsyncThunk(
+  "fetch/fetchOrders",
+  async (_arg: any, { getState }: any) => {
+    const state = getState();
+    const token = state.auth.token;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    return ExternalApis.fetchCart(config);
   }
-  return ExternalApis.fetchCart(config);
-});
+);
 
-
-export const fetchAddress = createAsyncThunk("fetch/fetchAddress", async (_arg: any, { getState }: any,) => {
-  const state = getState();
-  const token = state.auth.token;
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
+export const fetchAddress = createAsyncThunk(
+  "fetch/fetchAddress",
+  async (_arg: any, { getState }: any) => {
+    const state = getState();
+    const token = state.auth.token;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    return ExternalApis.fetchAddress(config);
   }
-  return ExternalApis.fetchAddress(config);
-});
+);
 
-export const createAddress = createAsyncThunk("fetch/createAddress", async (payload: any, { getState }: any,) => {
-  const state = getState();
-  const token = state.auth.token;
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
+export const createAddress = createAsyncThunk(
+  "fetch/createAddress",
+  async (payload: any, { getState }: any) => {
+    const state = getState();
+    const token = state.auth.token;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    return ExternalApis.createAddress(payload, config);
   }
-  return ExternalApis.createAddress(payload, config);
-});
-
+);
 
 const initialState = {
   addresses: {
@@ -54,19 +61,26 @@ const initialState = {
     data: [],
     error: null,
   },
+  selectedAddress: null,
   orders: {
     status: "idle",
     data: [],
     error: null,
-  }
+  },
 } as UserState;
 
 export const UserSlice = createSlice({
   name: "dishes",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    selectAddress: (state: any, action: any) => {
+      return {
+        ...state,
+        selectedAddress: action.payload,
+      };
+    },
+  },
   extraReducers: {
-
     [fetchAddress.fulfilled.type]: (state: UserState, action: any) => {
       state.addresses = {
         status: "idle",
@@ -76,12 +90,13 @@ export const UserSlice = createSlice({
     },
     [createAddress.fulfilled.type]: (state: UserState, action: any) => {
       state.addresses.data.push(action.payload);
-    }
-
+    },
   },
 });
 
+export const { selectAddress } = UserSlice.actions;
 export const UserAddressSelector = (state: any) => state.user.addresses;
+export const selectedUserAddressSelector = (state: any) => state.user.selectedAddress;
 export const UserOrdersSelector = (state: any) => state.user.orders;
 
 export default UserSlice.reducer;

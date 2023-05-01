@@ -106,54 +106,61 @@ export class MenuItemBodyDto {
     example: 2,
     required: true,
   })
+  @IsOptional()
   @IsNumber()
   public count!: number;
 
   @ApiProperty({
     description: "thumbnails",
-    example: ["https://google.com/banner.png"],
+    example: "https://google.com/banner.png",
     required: true,
   })
   @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  public thumbnails!: string[];
+  @IsString()
+  public thumbnails!: string;
 }
 
-export class CreateCartMenuItemBodyDto {
+export class CreatePaymentBodyDto {
   @ApiProperty({
     description: "restaurant_id",
     example: "5272ec36-d9db-11ed-afa1-0242ac120002",
     required: true,
   })
   @IsUUID()
-  @IsString()
   public restaurant_id!: string;
 
   @ApiProperty({
-    description: "menu_item object",
-    example: {
-      id: "5272ec36-d9db-11ed-afa1-0242ac120009",
-      name: "paneer tikka masala",
-      description:
-        "Paneer tikka or Paneer Soola or Chhena Soola is an Indian dish made from chunks of paneer/ chhena marinated in spices and grilled in a tandoor. It is a vegetarian alternative to chicken tikka and other meat dishes. It is a popular dish that is widely available in India and countries with an Indian diaspora",
-      cuisine_type: "indian",
-      meal_type: "breakfast",
-      category: "category",
-      ingredients: "ingredients",
-      food_type: "vegan",
-      count: 1,
-      price: 500,
-      thumbnails: ["https://google.com/banner.png"],
-    },
+    description: "address_id",
+    example: "5272ec36-d9db-11ed-afa1-0242ac120002",
     required: true,
   })
-  @IsObject()
+  @IsUUID()
+  public address_id!: string;
+
+  @ApiProperty({
+    description: "menu_item object",
+    example: [
+      {
+        id: "5272ec36-d9db-11ed-afa1-0242ac120009",
+        name: "paneer tikka masala",
+        description:
+          "Paneer tikka or Paneer Soola or Chhena Soola is an Indian dish made from chunks of paneer/ chhena marinated in spices and grilled in a tandoor. It is a vegetarian alternative to chicken tikka and other meat dishes. It is a popular dish that is widely available in India and countries with an Indian diaspora",
+        cuisine_type: "indian",
+        meal_type: "breakfast",
+        category: "category",
+        ingredients: "ingredients",
+        food_type: "vegan",
+        count: 1,
+        price: 500,
+        thumbnails: "https://google.com/banner.png",
+      },
+    ],
+    required: true,
+  })
+  @IsArray()
   @ValidateNested()
   @ValidateType(() => MenuItemBodyDto)
-  public menu_item!: MenuItemBodyDto;
+  public menu_items!: MenuItemBodyDto[];
 }
 
-export class UpdateCartMenuItemBodyDto extends PartialType(
-  CreateCartMenuItemBodyDto
-) {}
+export class UpdatePaymentBodyDto extends PartialType(CreatePaymentBodyDto) {}

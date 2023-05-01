@@ -9,8 +9,8 @@ import {
 } from "typeorm";
 import { MenuItemBodyDto } from "../dto/order.dto";
 
-@Entity("order")
-export class CartEntity extends BaseEntity {
+@Entity("orders")
+export class OrderEntity extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   public id!: string;
 
@@ -20,11 +20,14 @@ export class CartEntity extends BaseEntity {
   @Column({ type: "uuid", select: true })
   public restaurant_id!: string;
 
+  @Column({ type: "uuid", select: true, default: null })
+  public address_id!: string;
+
   @Column({ type: "varchar", default: "draft" })
   public status!: string;
 
   @Column({ type: "int", select: true })
-  public payment!: number;
+  public amount!: number;
 
   @Column({ type: "jsonb", default: null })
   public menu_items!: MenuItemBodyDto[];

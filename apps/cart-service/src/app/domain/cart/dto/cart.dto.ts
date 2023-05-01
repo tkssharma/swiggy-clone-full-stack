@@ -156,4 +156,4 @@ export class CreateCartMenuItemBodyDto {
 
 export class UpdateCartMenuItemBodyDto extends PartialType(
   CreateCartMenuItemBodyDto
-) { }
+) {}

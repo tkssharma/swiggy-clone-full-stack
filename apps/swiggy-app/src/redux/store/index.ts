@@ -11,7 +11,7 @@ export default configureStore({
     dishes: DishReducer,
     auth: AuthReducer,
     cart: CartReducer,
-    user: UserReducer
+    user: UserReducer,
   },
   devTools: true,
 });

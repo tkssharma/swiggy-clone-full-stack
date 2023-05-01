@@ -12,38 +12,47 @@ interface CartState {
   cart: ApiData;
 }
 
-export const fetchCartItems = createAsyncThunk("fetch/cart", async (_arg: any, { getState }: any,) => {
-  const state = getState();
-  const token = state.auth.token;
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
+export const fetchCartItems = createAsyncThunk(
+  "fetch/cart",
+  async (_arg: any, { getState }: any) => {
+    const state = getState();
+    const token = state.auth.token;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    return ExternalApis.fetchCart(config);
   }
-  return ExternalApis.fetchCart(config);
-});
+);
 
-export const addCartItems = createAsyncThunk("fetch/addCartItem", async (payload: any, { getState }: any,) => {
-  const state = getState();
-  const token = state.auth.token;
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
+export const addCartItems = createAsyncThunk(
+  "fetch/addCartItem",
+  async (payload: any, { getState }: any) => {
+    const state = getState();
+    const token = state.auth.token;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    return ExternalApis.addCartItems(payload, config);
   }
-  return ExternalApis.addCartItems(payload, config);
-});
+);
 
-export const removeCartItems = createAsyncThunk("fetch/removeCartItem", async (payload: any, { getState }: any,) => {
-  const state = getState();
-  const token = state.auth.token;
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
+export const removeCartItems = createAsyncThunk(
+  "fetch/removeCartItem",
+  async (payload: any, { getState }: any) => {
+    const state = getState();
+    const token = state.auth.token;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    return ExternalApis.removeCartItems(payload, config);
   }
-  return ExternalApis.removeCartItems(payload, config);
-});
+);
 
 const initialState = {
   cart: {
@@ -94,7 +103,6 @@ export const CartSlice = createSlice({
         error: null,
       };
     },
-
   },
 });
 

@@ -9,9 +9,10 @@ import ThankyouPage from "../pages/thank-you-page";
 
 import Otp from "./checkout/otp/otp";
 import { useSelector } from "react-redux";
+import { authSelector } from "../redux/auth/auth.slice";
 
 const AllRoutes = ({ setOpenLoginSignup, setLoadLogin, setOpenAddressForm }: any) => {
-	const isAuth = useSelector((state: any) => state.auth.auth.isAuth);
+	const { auth } = useSelector(authSelector);
 
 	return (
 		<>
@@ -66,7 +67,7 @@ const AllRoutes = ({ setOpenLoginSignup, setLoadLogin, setOpenAddressForm }: any
 				<Route
 					path='/otp'
 					element={
-						isAuth ? (
+						auth.isAuth ? (
 							<Otp
 								setOpenLoginSignup={setOpenLoginSignup}
 								setLoadLogin={setLoadLogin}

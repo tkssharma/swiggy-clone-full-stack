@@ -15,4 +15,7 @@ services:
   postgres-cart:
     image: postgres
     restart: unless-stopped
+
+  rmq-listerner:
+    image: rabbitmq:3-management-alpine
   

@@ -36,26 +36,23 @@ import {
   NO_ENTITY_FOUND,
   UNAUTHORIZED_REQUEST,
 } from "src/app/app.constants";
-import { CartService } from "../services/cart.service";
+import { PaymentService } from "../services/payment.service";
 import { Type } from "class-transformer";
 import { FirebaseAuthGuard, User, UserMetaData } from "@swiggy/auth";
-import {
-  CreateCartMenuItemBodyDto,
-  UpdateCartMenuItemBodyDto,
-} from "../dto/cart.dto";
+import { CreatePaymentBodyDto, UpdatePaymentBodyDto } from "../dto/payment.dto";
 
 @ApiBearerAuth("authorization")
-@Controller("cart")
+@Controller("payments")
 @UsePipes(
   new ValidationPipe({
     whitelist: true,
     transform: true,
   })
 )
-@ApiTags("cart")
-export class CartController {
+@ApiTags("payment")
+export class PaymentController {
   constructor(
-    private readonly service: CartService,
+    private readonly service: PaymentService,
     private readonly logger: Logger
   ) {}
 
@@ -67,40 +64,12 @@ export class CartController {
   @ApiInternalServerErrorResponse({ description: INTERNAL_SERVER_ERROR })
   @UseGuards(FirebaseAuthGuard)
   @Post("/")
-  public async addMenuItemToCart(
+  public async addPayments(
     @User() user: UserMetaData,
-    @Body() payload: CreateCartMenuItemBodyDto
+    @Body() payload: CreatePaymentBodyDto
   ) {
-    return await this.service.createCartMenuItem(user, payload);
+    return await this.service.createPayment(user, payload);
   }
-
-  @HttpCode(HttpStatus.OK)
-  @ApiConsumes("application/json")
-  @ApiNotFoundResponse({ description: NO_ENTITY_FOUND })
-  @ApiForbiddenResponse({ description: UNAUTHORIZED_REQUEST })
-  @ApiUnprocessableEntityResponse({ description: BAD_REQUEST })
-  @ApiInternalServerErrorResponse({ description: INTERNAL_SERVER_ERROR })
-  @UseGuards(FirebaseAuthGuard)
-  @Get("/")
-  public async listUserCart(@User() user: UserMetaData) {
-    return await this.service.listUserCart(user);
-  }
-
-  @HttpCode(HttpStatus.OK)
-  @ApiConsumes("application/json")
-  @ApiNotFoundResponse({ description: NO_ENTITY_FOUND })
-  @ApiForbiddenResponse({ description: UNAUTHORIZED_REQUEST })
-  @ApiUnprocessableEntityResponse({ description: BAD_REQUEST })
-  @ApiInternalServerErrorResponse({ description: INTERNAL_SERVER_ERROR })
-  @UseGuards(FirebaseAuthGuard)
-  @Put("/")
-  public async deleteUserMenuItemCart(
-    @User() user: UserMetaData,
-    @Body() payload: UpdateCartMenuItemBodyDto
-  ) {
-    return await this.service.deleteCartMenuItem(user, payload);
-  }
-
   @HttpCode(HttpStatus.CREATED)
   @ApiConsumes("application/json")
   @ApiNotFoundResponse({ description: NO_ENTITY_FOUND })
@@ -108,8 +77,11 @@ export class CartController {
   @ApiUnprocessableEntityResponse({ description: BAD_REQUEST })
   @ApiInternalServerErrorResponse({ description: INTERNAL_SERVER_ERROR })
   @UseGuards(FirebaseAuthGuard)
-  @Delete("/clear")
-  public async clearUserCart(@User() user: UserMetaData) {
-    return await this.service.clearCartMenuItem(user);
+  @Put("/")
+  public async updatePayments(
+    @User() user: UserMetaData,
+    @Body() payload: UpdatePaymentBodyDto
+  ) {
+    return await this.service.updatePayment(user, payload);
   }
 }

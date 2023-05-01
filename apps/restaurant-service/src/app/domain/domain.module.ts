@@ -20,7 +20,11 @@ import { DishController } from "./restaurant/controller/dish.controller";
   imports: [
     AuthModule,
     EventEmitterModule.forRoot(),
-    TypeOrmModule.forFeature([RestaurantEntity, RestaurantDishEntity, RestaurantAddressEntity]),
+    TypeOrmModule.forFeature([
+      RestaurantEntity,
+      RestaurantDishEntity,
+      RestaurantAddressEntity,
+    ]),
     DBModule.forRoot({
       entities: [
         RestaurantAddressEntity,
@@ -35,4 +39,4 @@ import { DishController } from "./restaurant/controller/dish.controller";
   controllers: [RestaurantController, RestaurantDishController, DishController],
   providers: [RestaurantService, RestaurantDishService],
 })
-export class DomainModule { }
+export class DomainModule {}

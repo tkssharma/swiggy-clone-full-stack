@@ -226,4 +226,4 @@ export class SearchDishQueryDto {
 
 export class UpdateRestaurantDishBodyDto extends PartialType(
   CreateRestaurantDishBodyDto
-) { }
+) {}

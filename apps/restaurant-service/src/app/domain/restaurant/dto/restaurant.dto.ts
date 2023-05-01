@@ -258,7 +258,6 @@ export class CreateRestaurantBodyDto {
   @IsString()
   public website_url!: string;
 
-
   @ApiProperty({
     description: "address payload",
     example: {

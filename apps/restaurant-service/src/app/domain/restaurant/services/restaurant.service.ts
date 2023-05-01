@@ -36,7 +36,7 @@ export class RestaurantService {
     private readonly connection: Connection,
     private configService: ConfigService,
     private eventEmitter: EventEmitter2
-  ) { }
+  ) {}
 
   async getRestaurantById(param: getRestaurantByIdDto) {
     const { id } = param;
@@ -45,10 +45,10 @@ export class RestaurantService {
       relations: ["dishes"],
     });
     const address = await this.restaurantAddRepo.findOne({
-      where: { restaurant: { id } }
+      where: { restaurant: { id } },
     });
     const dishMenuItems = response.dishes;
-    const categories = groupBy(dishMenuItems, 'category');
+    const categories = groupBy(dishMenuItems, "category");
     response.dishes = categories;
     response.address = address;
     return response;
