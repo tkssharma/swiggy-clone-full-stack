@@ -2,29 +2,28 @@ import React from "react";
 import { useSelector } from "react-redux";
 import CartItem from "./cart-item";
 import { Link, useLocation } from "react-router-dom";
+import { CartItemsSelector } from "../../redux/cart/cart.slice";
+import { authSelector } from "../../redux/auth/auth.slice";
 
-function index({ ischeckout }: any) {
-	let isAuth = useSelector((state: any) => state.auth.auth.isAuth);
-	let curUser = useSelector((state: any) => state.auth.currentUser);
-	const cart = useSelector((state: any) => state.cart);
+function index({ isCheckout }: any) {
+	const {data: menuItem} = useSelector(CartItemsSelector);
+  const { auth } = useSelector(authSelector);
+  const isAuth = auth.isAuth;
+  const currentUser = auth.currentUser
 	const location = useLocation();
 	const isInCheckout = location.pathname.split("/")[1] === "checkout";
 
 
-	// console.log(isAuth);
-
-	const cartItems: any = []
-
 	return isAuth ? (
-		cartItems.length > 0 ? (
+		menuItem && menuItem.menu_items?.length > 0 ? (
 			<>
 				<div className='p-4 border '>
 					<h1 className='text-3xl font-bold'> Cart </h1>
-					<p className='text-sm text-gray-500'>{cartItems.length} Items</p>
-					{cartItems.length > 0 &&
-						cartItems?.map((elem: any) => (
+					<p className='text-sm text-gray-500'>{menuItem.menu_items.length} Items</p>
+					{menuItem.menu_items.length > 0 &&
+						menuItem.menu_items?.map((elem: any) => (
 							<CartItem
-								key={elem.dishId}
+								key={elem.id}
 								dish={elem}
 							/>
 						))}
@@ -32,9 +31,9 @@ function index({ ischeckout }: any) {
 						<p>Subtotal</p>
 						<p className='text-base'>
 							₹{" "}
-							{(cartItems.length > 0 &&
-								cartItems.reduce(
-									(total: any, curr: any) => total + +curr.totalPrice,
+							{(menuItem.menu_items.length > 0 &&
+								menuItem.menu_items.reduce(
+									(total: any, curr: any) => total + + (curr.price * curr.count),
 									0
 								)) ||
 								0}

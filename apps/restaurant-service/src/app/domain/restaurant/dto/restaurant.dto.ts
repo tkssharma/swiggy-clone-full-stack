@@ -202,6 +202,26 @@ export class CreateRestaurantBodyDto {
   public delivery_options!: string;
 
   @ApiProperty({
+    description: "delivery_time",
+    example: 30,
+    required: true,
+  })
+  @Transform(() => Number())
+  @IsOptional()
+  @IsNumber()
+  public delivery_time!: number;
+
+  @ApiProperty({
+    description: "average_price",
+    example: 500,
+    required: true,
+  })
+  @Transform(() => Number())
+  @IsOptional()
+  @IsNumber()
+  public average_price!: number;
+
+  @ApiProperty({
     description: "pickup_options",
     example: "pickup_options",
     required: true,
@@ -227,6 +247,17 @@ export class CreateRestaurantBodyDto {
   @IsDateString()
   @IsString()
   public closes_at!: string;
+
+  @ApiProperty({
+    description: "website_url",
+    example: "https://dominos.com",
+    required: false,
+  })
+  @IsOptional()
+  @IsUrl()
+  @IsString()
+  public website_url!: string;
+
 
   @ApiProperty({
     description: "address payload",

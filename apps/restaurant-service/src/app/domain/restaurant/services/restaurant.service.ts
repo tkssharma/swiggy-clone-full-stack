@@ -23,6 +23,7 @@ import { RestaurantAddressEntity } from "../entity/restaurant.address.entity";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { UserMetaData } from "@swiggy/auth";
 import { off } from "process";
+import { groupBy } from "../utility";
 
 @Injectable()
 export class RestaurantService {
@@ -30,17 +31,27 @@ export class RestaurantService {
     private readonly logger: Logger,
     @InjectRepository(RestaurantEntity)
     private restaurantRepo: Repository<RestaurantEntity>,
+    @InjectRepository(RestaurantAddressEntity)
+    private restaurantAddRepo: Repository<RestaurantAddressEntity>,
     private readonly connection: Connection,
     private configService: ConfigService,
     private eventEmitter: EventEmitter2
-  ) {}
+  ) { }
 
   async getRestaurantById(param: getRestaurantByIdDto) {
     const { id } = param;
-    return await this.restaurantRepo.findOne({
+    const response = await this.restaurantRepo.findOne({
       where: { id },
       relations: ["dishes"],
     });
+    const address = await this.restaurantAddRepo.findOne({
+      where: { restaurant: { id } }
+    });
+    const dishMenuItems = response.dishes;
+    const categories = groupBy(dishMenuItems, 'category');
+    response.dishes = categories;
+    response.address = address;
+    return response;
   }
 
   async getAllMyRestaurants(user: UserMetaData) {

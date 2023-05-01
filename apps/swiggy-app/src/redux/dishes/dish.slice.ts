@@ -12,8 +12,8 @@ interface DishState {
   dishes: ApiData;
 }
 
-export const fetchDishes = createAsyncThunk("fetch/Dishes", async () => {
-  return ExternalApis.fetchDishes();
+export const fetchDishes = createAsyncThunk("fetch/Dishes", async (filter?: string) => {
+  return ExternalApis.fetchDishes(filter);
 });
 
 const initialState = {

@@ -6,8 +6,10 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   OneToMany,
+  OneToOne,
 } from "typeorm";
 import { RestaurantDishEntity } from "./restaurant.dish.entity";
+import { RestaurantAddressEntity } from "./restaurant.address.entity";
 
 @Entity("restaurants")
 export class RestaurantEntity extends BaseEntity {
@@ -36,7 +38,7 @@ export class RestaurantEntity extends BaseEntity {
   public ratings!: string;
 
   @Column({ type: "int", default: null })
-  public average_price!: string;
+  public average_price!: number;
 
   @Column({ type: "varchar" })
   public latitude!: string;
@@ -49,6 +51,9 @@ export class RestaurantEntity extends BaseEntity {
 
   @Column({ type: "jsonb", default: null })
   public thumbnails!: any;
+
+  @Column({ type: "int", default: null })
+  public delivery_time!: number;
 
   @Column({ type: "varchar", default: null })
   public delivery_options!: string;
@@ -64,6 +69,9 @@ export class RestaurantEntity extends BaseEntity {
 
   @OneToMany(() => RestaurantDishEntity, (event) => event.restaurant)
   public dishes!: RestaurantDishEntity[];
+
+  @OneToOne(() => RestaurantAddressEntity)
+  address: RestaurantAddressEntity;
 
   @CreateDateColumn({
     type: "timestamptz",

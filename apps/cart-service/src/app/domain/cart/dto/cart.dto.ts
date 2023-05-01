@@ -106,18 +106,18 @@ export class MenuItemBodyDto {
     example: 2,
     required: true,
   })
+  @IsOptional()
   @IsNumber()
   public count!: number;
 
   @ApiProperty({
     description: "thumbnails",
-    example: ["https://google.com/banner.png"],
+    example: "https://google.com/banner.png",
     required: true,
   })
   @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  public thumbnails!: string[];
+  @IsString()
+  public thumbnails!: string;
 }
 
 export class CreateCartMenuItemBodyDto {
@@ -156,4 +156,4 @@ export class CreateCartMenuItemBodyDto {
 
 export class UpdateCartMenuItemBodyDto extends PartialType(
   CreateCartMenuItemBodyDto
-) {}
+) { }

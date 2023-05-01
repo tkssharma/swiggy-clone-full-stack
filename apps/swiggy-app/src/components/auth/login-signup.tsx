@@ -124,7 +124,6 @@ function LoginSignup({ open, loadlogin }: any) {
 					email: "",
 					password: "",
 				});
-				navigate("/");
 			} else {
 				error &&
 					toast({

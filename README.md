@@ -31,6 +31,19 @@
 
 - TBD
 
+## Application services
+
+| app    | port |
+| -------- | ------- |
+| proxy  |  80    |
+| user service | 3001     |
+| restaurant service | 3002     |
+| cart service | 3003     |
+| order service | 3004    |
+| payment service | 3005   |
+| delivery service | 3006    |
+| MQ Listener service | 3001     |
+
 ## How To Use
 
 To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:

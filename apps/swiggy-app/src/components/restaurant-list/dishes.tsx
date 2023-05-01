@@ -4,7 +4,7 @@ import React, { useEffect, useReducer, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
-import RestaurantCard from "../restaurant-card/card";
+import DishCard from "../dish-card/card";
 import useLazyLoad from "../../hooks/useLazyLoad";
 import Skeleton from "react-loading-skeleton";
 import { fetchDishes, topDishes } from "../../redux/dishes/dish.slice";
@@ -14,21 +14,21 @@ const TOTAL_PAGES = 13;
 
 const index = () => {
 	const triggerRef = useRef(null);
-  const {data: restaurants, state} = useSelector(topDishes);
+  const {data: dishes, state} = useSelector(topDishes);
 
 	const filtersReducer = (state: any, { type }: any) => {
 		switch (type) {
 			case "deliverTime":
-				return "_sort=deliverTime&_order=asc";
+				return "filter_type=delivery_time&order_by=ASC";
 
 			case "ratings":
-				return "_sort=rating&_order=desc";
+				return "filter_type=rating&order_by=DESC";
 
 			case "pricelth":
-				return "_sort=cheapestPrice&_order=asc";
+				return "filter_type=price&order_by=ASC";
 
 			case "pricehtl":
-				return "_sort=cheapestPrice&_order=desc";
+				return "filter_type=price&order_by=DESC";
 
 			default:
 				return "";
@@ -40,7 +40,7 @@ const index = () => {
 	const [filters, dispatch] = useReducer(filtersReducer, "");
 
 	useEffect(() => {
-		storeDispatch(fetchDishes());
+		storeDispatch(fetchDishes(filters));
 	}, [filters]);
 
 
@@ -53,7 +53,7 @@ const index = () => {
 			<div className='flex flex-col max-w-[1200px] mx-auto justify-center bg-white px-2 md:px-0'>
 				<header className=' h-16 w-full  border-b flex items-end  justify-between'>
 					<p className='font-bold tracking-wider text-2xl'>
-						{restaurants.length} Restaurants
+						{dishes.length === 0 ? '' : dishes.length} Top Menu Items
 					</p>
 					<ul className='flex gap-4 md:gap-2 text-sm text-gray-500  md:w-1/2 h-full  justify-between'>
 						<li
@@ -66,7 +66,7 @@ const index = () => {
 						<li
 							onClick={(e) => handleFilterChange("deliverTime")}
 							className={`${
-								filters === "_sort=deliverTime&_order=asc"
+								filters === "filter_type=delivery_time&order_by=ASC"
 									? "font-bold border-black"
 									: ""
 							} cursor-pointer border-b-2 border-transparent hover:border-black h-full hidden sm:flex pb-2 items-end`}>
@@ -75,7 +75,7 @@ const index = () => {
 						<li
 							onClick={(e) => handleFilterChange("ratings")}
 							className={`${
-								filters === "_sort=rating&_order=desc"
+								filters === "filter_type=rating&order_by=DESC"
 									? "font-bold border-black"
 									: ""
 							} cursor-pointer border-b-2 border-transparent hover:border-black h-full flex pb-2 items-end`}>
@@ -84,7 +84,7 @@ const index = () => {
 						<li
 							onClick={(e) => handleFilterChange("pricelth")}
 							className={`${
-								filters === "_sort=cheapestPrice&_order=asc"
+								filters === "filter_type=price&order_by=ASC"
 									? "font-bold border-black"
 									: ""
 							} cursor-pointer border-b-2 border-transparent hover:border-black h-full hidden sm:flex pb-2 items-end`}>
@@ -93,7 +93,7 @@ const index = () => {
 						<li
 							onClick={(e) => handleFilterChange("pricehtl")}
 							className={`${
-								filters === "_sort=cheapestPrice&_order=desc"
+								filters === "filter_type=price&order_by=DESC"
 									? "font-bold border-black"
 									: ""
 							} cursor-pointer border-b-2 border-transparent hover:border-black h-full hidden md:flex pb-2 items-end`}>
@@ -113,10 +113,10 @@ const index = () => {
 
 					<div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 w-full mt-4 gap-8'>
 						{
-						restaurants.map((restaurant: any) => (
-									<RestaurantCard
-										restaurantDetails={restaurant}
-										key={restaurant.id}
+						dishes.map((dish: any) => (
+									<DishCard
+										dishDetails={dish}
+										key={dish.id}
 									/>
 							  ))
             }

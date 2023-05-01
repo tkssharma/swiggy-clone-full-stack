@@ -37,8 +37,8 @@ export class RestaurantDishEntity extends BaseEntity {
   @Column({ type: "varchar", default: null })
   public ingredients!: string;
 
-  @Column({ type: "jsonb", default: null })
-  public thumbnails!: any;
+  @Column({ type: "varchar", default: null })
+  public thumbnails!: string;
 
   @Column({ type: "integer" })
   public price!: number;

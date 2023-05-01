@@ -10,26 +10,36 @@ import Footer from "../components/footer";
 import Navbar from "../components/navbar";
 import TopLoading from "../components/top-loading";
 import { fetchRestaurantDishes, selectedRestaurants } from "../redux/restaurant/restaurant.slice";
+import { fetchCartItems } from "../redux/cart/cart.slice";
+import { authSelector } from "../redux/auth/auth.slice";
 
 const Restaurant = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 
   const dispatch = useDispatch()
 	const { id } = useParams();
 	const {status, data} = useSelector(selectedRestaurants);
-  console.log(data, status);
-	let dishesData = data?.dishes
+  const {auth} = useSelector(authSelector);
+
+	let dishes = data?.dishes
 	const [selectedMenu, setSelectedMenu] = useState(0);
 	const [dishSearch, setDishSearch] = useState("");
 	const [onlyDishesId, setOnlyDishesId] = useState([]);
 	const [searchResults, setSearchResults] = useState([]);
 	const [vegOnly, setVegOnly] = useState(false);
 
-	const dishes = dishesData;
-
   useEffect(() => {
-      const filtered = dishesData && dishesData.filter((i: any) => (i.name.includes(dishSearch)));
-      setSearchResults(filtered || [])
+    const filtered: any = []
+    
+    for(const i in dishes) {
+      for(const dish of dishes[i]) {
+        if(dish.name.toLowerCase().includes(dishSearch.toLowerCase())) {
+          filtered.push(dish);
+        }
+      }
+    }
+    setSearchResults(filtered)
   }, [dishSearch])
+
 
 	function handleDishSearch(e: any) {
 		setDishSearch(e.target.value);
@@ -39,6 +49,9 @@ const Restaurant = ({ setOpenLoginSignup, setLoadLogin }: any) => {
     dispatch(fetchRestaurantDishes(id!))
   }, [id])
 
+  useEffect(() => {
+    auth.isAuth && dispatch(fetchCartItems(null))
+  }, [auth])
 
 
 	return status === 'idle' ?  (
@@ -102,10 +115,11 @@ const Restaurant = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 							<div className='w-[80%] md:w-full'>
 								<h1 className='text-4xl leading-10'>{data.name}</h1>
 								<h1 className='text-sm text-gray-300 mb-4 font-semibold'>
-									{data?.description}
+									{data?.description?.substring(0,200)}
 								</h1>
 								<h1 className=' text-gray-200 first-letter:capitalize mb-4 font-semibold'>
-									{data.city}
+									{data?.address?.city}
+                  {data?.address?.state}
 								</h1>
 								<div className='mt-4 flex justify-between'>
 									<div className='pr-8 border-r flex flex-col justify-end'>
@@ -133,7 +147,7 @@ const Restaurant = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 										<p className='text-xs text-gray-300'>Delivery Time</p>
 									</div>
 									<div className='px-8'>
-										<span className=''>{data.price} ₹ </span>
+										<span className=''>{data.average_price} ₹ </span>
 										<p className='text-xs text-gray-300'>price</p>
 									</div>
 								</div>
@@ -187,7 +201,7 @@ const Restaurant = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 								Search
 							</p>
 						)}
-						{data?.dishes?.map((menuItem: any, idx: number) => (
+						{dishes && Object.keys(dishes)?.map((key: any, idx: number) => (
 							<p
 								className={`text-sm pr-8 border-r-4 cursor-pointer border-transparent mb-2 ${
 									selectedMenu === idx
@@ -196,7 +210,7 @@ const Restaurant = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 								}`}
 								onClick={(e) => setSelectedMenu(idx)}
 								key={idx}>
-								{menuItem.category}
+								{key}
 							</p>
 						))}
 					</div>
@@ -217,14 +231,14 @@ const Restaurant = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 												/>
 											</div>
 									  ))
-									: data?.dishes?.map((dishObj: any, idx: number) => (
+									: Object.keys(dishes)?.map((key: any, idx: number) => (
 											<DishCategoryWise
 												key={idx}
 												id={idx}
 												restaurantId={id}
 												vegOnly={vegOnly}
-												category={dishObj.category}
-												dishes={data.dishes}
+												category={key}
+												dishes={dishes[`${key}`]}
 											/>
 									  ))}
 							</div>

@@ -40,16 +40,18 @@ export class RestaurantDishService {
     private restaurantDishRepo: Repository<RestaurantDishEntity>,
     private configService: ConfigService,
     private eventEmitter: EventEmitter2
-  ) {}
+  ) { }
 
   async listRestaurantDish(
     params: SearchDishQueryDto
-  ): Promise<RestaurantDishEntity[]> {
+  ): Promise<any[]> {
     const { search_text, page, limit, filter_type, order_by } = params;
     const offset = limit * (page - 1);
     const query = this.connection
       .getRepository(RestaurantDishEntity)
-      .createQueryBuilder("restaurant_dishes");
+      .createQueryBuilder("restaurant_dishes")
+      .leftJoinAndSelect("restaurant_dishes.restaurant", "restaurants")
+
     if (search_text) {
       query.andWhere(
         new Brackets((qb) => {
@@ -81,7 +83,8 @@ export class RestaurantDishService {
         order_by ? (order_by as OrderBy) : "ASC"
       );
     }
-    return await query.skip(offset).limit(limit).getMany();
+    const data = await query.skip(offset).limit(limit).getMany();
+    return data;
   }
 
   async validateAuthorization(user, param) {

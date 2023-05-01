@@ -5,24 +5,32 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import LoginSignup from "./components/auth/login-signup"
+import AddressForm from "./components/user/address-form"
+
 
 function App() {
-	const isAuth = useSelector((state: any) => state.auth.auth.isAuth);
-	const [openLoginSignup, setOpenLoginSignup] = useState(false);
-	const [loadlogin, setLoadLogin] = useState(true);
-	return (
-		<>
-			<LoginSignup
-				open={openLoginSignup}
-				loadlogin={loadlogin}
-			/>
+  const isAuth = useSelector((state: any) => state.auth.auth.isAuth);
+  const [openLoginSignup, setOpenLoginSignup] = useState(false);
+  const [openAddressForm, setOpenAddressForm] = useState(false);
+  const [loadlogin, setLoadLogin] = useState(true);
+  return (
+    <>
+      <LoginSignup
+        open={openLoginSignup}
+        loadlogin={loadlogin}
+      />
 
-			<AllRoutes
-				setOpenLoginSignup={setOpenLoginSignup}
-				setLoadLogin={setLoadLogin}
-			/>
-		</>
-	);
+      <AddressForm
+        open={openAddressForm}
+      />
+
+      <AllRoutes
+        setOpenAddressForm={setOpenAddressForm}
+        setOpenLoginSignup={setOpenLoginSignup}
+        setLoadLogin={setLoadLogin}
+      />
+    </>
+  );
 }
 
 export default App;

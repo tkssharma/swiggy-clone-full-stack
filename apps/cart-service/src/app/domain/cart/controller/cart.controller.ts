@@ -57,7 +57,7 @@ export class CartController {
   constructor(
     private readonly service: CartService,
     private readonly logger: Logger
-  ) {}
+  ) { }
 
   @HttpCode(HttpStatus.CREATED)
   @ApiConsumes("application/json")
@@ -86,7 +86,9 @@ export class CartController {
     return await this.service.listUserCart(user);
   }
 
-  @HttpCode(HttpStatus.CREATED)
+
+
+  @HttpCode(HttpStatus.OK)
   @ApiConsumes("application/json")
   @ApiNotFoundResponse({ description: NO_ENTITY_FOUND })
   @ApiForbiddenResponse({ description: UNAUTHORIZED_REQUEST })
@@ -94,21 +96,6 @@ export class CartController {
   @ApiInternalServerErrorResponse({ description: INTERNAL_SERVER_ERROR })
   @UseGuards(FirebaseAuthGuard)
   @Put("/")
-  public async updateUserCart(
-    @User() user: UserMetaData,
-    @Body() payload: UpdateCartMenuItemBodyDto
-  ) {
-    return await this.service.updateCartMenuItem(user, payload);
-  }
-
-  @HttpCode(HttpStatus.CREATED)
-  @ApiConsumes("application/json")
-  @ApiNotFoundResponse({ description: NO_ENTITY_FOUND })
-  @ApiForbiddenResponse({ description: UNAUTHORIZED_REQUEST })
-  @ApiUnprocessableEntityResponse({ description: BAD_REQUEST })
-  @ApiInternalServerErrorResponse({ description: INTERNAL_SERVER_ERROR })
-  @UseGuards(FirebaseAuthGuard)
-  @Delete("/")
   public async deleteUserMenuItemCart(
     @User() user: UserMetaData,
     @Body() payload: UpdateCartMenuItemBodyDto

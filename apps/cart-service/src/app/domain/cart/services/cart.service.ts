@@ -25,7 +25,7 @@ export class CartService {
     @InjectRepository(CartEntity)
     private cartRepo: Repository<CartEntity>,
     private eventEmitter: EventEmitter2
-  ) {}
+  ) { }
 
   async createCartMenuItem(
     user: UserMetaData,
@@ -39,23 +39,38 @@ export class CartService {
         user_id: user.uid,
       },
     });
-    let items: MenuItemBodyDto[] = [];
+    let existingItems: MenuItemBodyDto[] = [];
     if (existingCart) {
-      items = existingCart.menu_items;
-      items.push(payload.menu_item);
-      existingCart.menu_items = items;
+      existingItems = existingCart.menu_items;
+      const isItemExists = existingItems.find(i => i.id === payload.menu_item.id);
+      if (!isItemExists) {
+        payload.menu_item.count = 1;
+        existingItems.push(payload.menu_item);
+      } else {
+        existingItems = existingItems.map(i => {
+          if (i.id === payload.menu_item.id) {
+            i.count = i.count + 1;
+            return i;
+          }
+          return i;
+        })
+
+      }
+      existingCart.menu_items = existingItems;
       return await existingCart.save();
     } else {
-      items.push(payload.menu_item);
+      payload.menu_item.count = 1;
+      existingItems.push(payload.menu_item);
       return await this.cartRepo.save({
         user_id: user.uid,
         restaurant_id: restaurant_id,
-        menu_items: items,
+        menu_items: existingItems,
       });
     }
   }
 
-  async updateCartMenuItem(
+
+  async deleteCartMenuItem(
     user: UserMetaData,
     payload: UpdateCartMenuItemBodyDto
   ) {
@@ -72,32 +87,12 @@ export class CartService {
     } else {
       const updatedMenuItems = existingCart.menu_items.map((i) => {
         if (i.id === menu_item.id) {
-          return payload.menu_item;
+          i.count = i.count - 1;
+          return i;
         }
         return i;
-      });
-      existingCart.menu_items = updatedMenuItems;
-      return await existingCart.save();
-    }
-  }
-  async deleteCartMenuItem(
-    user: UserMetaData,
-    payload: UpdateCartMenuItemBodyDto
-  ) {
-    const { uid } = user;
-    const { restaurant_id, menu_item } = payload;
-    const existingCart = await this.cartRepo.findOne({
-      where: {
-        restaurant_id,
-        user_id: uid,
-      },
-    });
-    if (!existingCart) {
-      throw new NotFoundException();
-    } else {
-      const updatedMenuItems = existingCart.menu_items.filter(
-        (i) => i.id !== menu_item.id
-      );
+      }
+      ).filter(i => i.count > 0)
       existingCart.menu_items = updatedMenuItems;
       return await existingCart.save();
     }

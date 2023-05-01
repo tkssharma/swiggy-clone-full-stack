@@ -95,5 +95,5 @@ export const {
   registerSuccess,
   registerRequest,
 } = AuthSlice.actions;
-export const authSelector = (state: any) => state;
+export const authSelector = (state: any) => state.auth;
 export default AuthSlice.reducer;

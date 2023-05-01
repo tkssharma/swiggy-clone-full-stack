@@ -35,7 +35,7 @@ const RestaurantCard = ({
 				className='flex flex-col items-center'
 				onClick={(e) => handleNavigate(id)}>
 				<img
-					src={thumbnails && thumbnails [0]}
+					src={thumbnails}
 					alt={name}
 					className='relative h-40  z-0'
 				/>
@@ -54,7 +54,7 @@ const RestaurantCard = ({
 								clipRule='evenodd'
 							/>
 						</svg>
-						{ratings}
+						{rating}
 					</span>
 					<span className='text-xs'>
 						{deliverTime > 59

@@ -163,15 +163,13 @@ export class CreateRestaurantDishBodyDto {
 
   @ApiProperty({
     description: "thumbnails",
-    example: [
-      "https://banner2.cleanpng.com/20180331/hbe/kisspng-mattar-paneer-indian-cuisine-shahi-paneer-palak-pa-indian-food-5abf15054700a6.2720425415224721972908.jpg",
-    ],
+    example:
+      "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_508,h_320,c_fill/ryyohiioctfdjumb0new",
+
     required: true,
   })
   @IsOptional()
-  @IsArray()
-  @ArrayMinSize(1)
-  public thumbnails!: string[];
+  public thumbnails!: string;
 }
 
 export class SearchDishQueryDto {
@@ -191,6 +189,7 @@ export class SearchDishQueryDto {
     enum: filterType,
     example: filterType.price,
   })
+  @IsOptional()
   @IsEnum(filterType)
   public filter_type!: string;
 
@@ -200,6 +199,7 @@ export class SearchDishQueryDto {
     enum: OrderBy,
     example: OrderBy.ASC,
   })
+  @IsOptional()
   @IsEnum(OrderBy)
   public order_by!: string;
 
@@ -226,4 +226,4 @@ export class SearchDishQueryDto {
 
 export class UpdateRestaurantDishBodyDto extends PartialType(
   CreateRestaurantDishBodyDto
-) {}
+) { }

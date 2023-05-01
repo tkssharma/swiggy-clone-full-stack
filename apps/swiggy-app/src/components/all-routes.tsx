@@ -10,7 +10,7 @@ import ThankyouPage from "../pages/thank-you-page";
 import Otp from "./checkout/otp/otp";
 import { useSelector } from "react-redux";
 
-const AllRoutes = ({ setOpenLoginSignup, setLoadLogin }: any) => {
+const AllRoutes = ({ setOpenLoginSignup, setLoadLogin, setOpenAddressForm }: any) => {
 	const isAuth = useSelector((state: any) => state.auth.auth.isAuth);
 
 	return (
@@ -56,6 +56,7 @@ const AllRoutes = ({ setOpenLoginSignup, setLoadLogin }: any) => {
 					path='/checkout'
 					element={
 						<Checkout
+              setOpenAddressForm={setOpenAddressForm}
 							setOpenLoginSignup={setOpenLoginSignup}
 							setLoadLogin={setLoadLogin}
 						/>

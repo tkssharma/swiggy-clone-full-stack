@@ -16,7 +16,6 @@ function Navbar({ setOpenLoginSignup, setLoadLogin }: any) {
 	
   const logAuth = useSelector((state: any) => state.auth);const navigate = useNavigate();
 	const isAuth = useSelector((state: any) => state.auth.auth.isAuth);
-  console.log(`isAuth isAuth ${JSON.stringify(logAuth)}`)
 	const curUser = useSelector((state: any) => state.auth.currentUser?.name);
 	const dispatch = useDispatch();
 	const toast = useToast();
@@ -27,6 +26,7 @@ function Navbar({ setOpenLoginSignup, setLoadLogin }: any) {
 
 	useEffect(() => {
 		navigator.geolocation.getCurrentPosition((pos: any) => {
+      console.log(pos.coords.latitude, pos.coords.longitude)
 			setLatitude(pos.coords.latitude);
 			setLongitude(pos.coords.longitude);
 		});

@@ -1,23 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CashOnDelivery from "../components/checkout/cash-on-delivery";
 import CheckoutCredit from "../components/checkout/checkout-credit";
 import Wallet from "../components/checkout/wallet";
 import UPI from "../components/checkout/upi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Cart from "../components/cart";
 import Footer from "../components/footer";
 import Navbar from "../components/navbar";
+import { authSelector } from "../redux/auth/auth.slice";
+import { CartItemsSelector, fetchCartItems } from "../redux/cart/cart.slice";
+import { UserAddressSelector, fetchAddress } from "../redux/user/user.slice";
 
-function Checkout({ setOpenLoginSignup, setLoadLogin }: any) {
+function Checkout({ setOpenLoginSignup, setLoadLogin, setOpenAddressForm }: any) {
 	const [checkoutState, setCheckoutState] = useState(4);
-	let isAuth = useSelector((state: any) => state.auth.auth.isAuth);
-	let curUser = useSelector((state: any) => state.auth.currentUser);
-	const cart = useSelector((state: any) => state.cart);
 
-	let currentCart = null;
-	if (isAuth) {
-		[currentCart] = cart.filter((elem: any) => elem.username === curUser.username);
-	}
+  const dispatch = useDispatch()
+  const {auth, currentUser: curUser} = useSelector(authSelector);
+  const { data: addressed} = useSelector(UserAddressSelector);
+
+  const {data: menuItem} = useSelector(CartItemsSelector);
+
+
+  const selectAddress = (address: any) => {}
+
+  useEffect(() => {
+      if(auth.isAuth ){
+        dispatch(fetchCartItems(null))
+        dispatch(fetchAddress(null))
+      }
+  }, [auth])
 
 	return (
 		<>
@@ -27,7 +38,7 @@ function Checkout({ setOpenLoginSignup, setLoadLogin }: any) {
 			/>
 			<div className=' flex max-w-[1500px] mx-auto bg-slate-100 '>
 				<div className='w-full lg:w-[74%]  flex flex-col gap-12 items-center pt-20 '>
-					{isAuth ? (
+					{auth.isAuth ? (
 						<div className='h-52 border w-[80%] bg-white p-8'>
 							<h1 className='text-xl font-semibold'>Logged in</h1>
 							<br />
@@ -72,7 +83,7 @@ function Checkout({ setOpenLoginSignup, setLoadLogin }: any) {
 
 					<div className='h-90  w-[80%] bg-white p-8'>
 						<h1 className='text-xl font-semibold'>Select delivery address</h1>
-						{isAuth && (
+						{auth.isAuth && (
 							<>
 								<p className='text-base font-medium'>
 									You have a saved address in this location
@@ -93,13 +104,17 @@ function Checkout({ setOpenLoginSignup, setLoadLogin }: any) {
 										/>
 									</svg>{" "}
 									&nbsp; &nbsp;
-									<div className='  w-[50%]'>
-										<h1 className='text-xl font-semibold'>Home</h1>
-										<p className='text-base font-medium py-5'>Nangloi, Delhi</p>
-										<button className='bg-green-500 rounded-sm text-white text-sm h-7 p-1 '>
-											DELIVER HERE
-										</button>
-									</div>
+                  {addressed && addressed.map((i: any) => {
+                    return (
+                      <div className='  w-[50%]'>
+                      <h1 className='text-xl font-semibold'>{i.name}</h1>
+                      <h4 className='text-base font-small py-5'> {i.street}{i.city} {i.state} {i.pincode} {i.country}</h4>
+                      <button onClick={(i) => selectAddress(i)} className='bg-green-500 rounded-sm text-white text-sm h-7 p-1 '>
+                        DELIVER HERE
+                      </button>
+                    </div>
+                    )
+                  })}
 									<svg
 										xmlns='http://www.w3.org/2000/svg'
 										fill='none'
@@ -128,8 +143,8 @@ function Checkout({ setOpenLoginSignup, setLoadLogin }: any) {
 											{" "}
 											Click on Add new to add new Address
 										</p>
-										<button className='bg-green-500 rounded-sm text-white text-sm h-7 p-1'>
-											ADD NEW
+										<button onClick={(e) => setOpenAddressForm((p: any) => !p)} className='bg-green-500 rounded-sm text-white text-sm h-7 p-1'>
+											Add New
 										</button>
 									</div>
 								</div>
@@ -138,7 +153,7 @@ function Checkout({ setOpenLoginSignup, setLoadLogin }: any) {
 					</div>
 					<div className=' border w-[80%] bg-white p-5'>
 						<h1 className='text-xl font-semibold'>Choose payment method</h1>
-						{isAuth && (
+						{auth.isAuth && (
 							<div className='flex '>
 								<div className='mt-5  w-[40%] bg-slate-200 p-8  text-start font-bold  '>
 									<button
@@ -297,7 +312,7 @@ function Checkout({ setOpenLoginSignup, setLoadLogin }: any) {
 				</div>
 				<div className='w-[40%] hidden lg:block mt-14 p-5  '>
 					<div className='bg-white w-[80%]'>
-						<Cart ischeckout={true} />
+						<Cart isCheckout={true} />
 					</div>
 
 					<div className=' border w-[80%]   bg-white p-8'>
@@ -341,15 +356,13 @@ function Checkout({ setOpenLoginSignup, setLoadLogin }: any) {
 						<hr style={{ border: "1px solid black" }} />
 						<div className='flex justify-between p-2'>
 							<div className='  font-semibold '>TO PAY</div>
-							<div>
-								₹{" "}
-								{(currentCart?.cartItems.length > 0 &&
-									currentCart.cartItems.reduce(
-										(acc: any, val: any) => acc + +val.totalPrice,
+              ₹{" "}
+								{(menuItem?.menu_items?.length > 0 &&
+									menuItem?.menu_items?.reduce(
+										(acc: any, val: any) => acc + (val.price * val.count),
 										0
 									)) ||
 									0}
-							</div>
 						</div>
 					</div>
 				</div>
@@ -361,3 +374,6 @@ function Checkout({ setOpenLoginSignup, setLoadLogin }: any) {
 }
 
 export default Checkout;
+
+
+					
